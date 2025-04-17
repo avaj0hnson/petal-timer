@@ -1,0 +1,52 @@
+<div
+    class="flex flex-col items-center justify-center gap-10 p-8 w-full min-h-screen transition-colors duration-500"
+    [ngClass]="{
+        'bg-blush-light': sessionType === 'work',
+        'bg-softwhite': sessionType === 'break'
+    }"
+>
+    <div class="relative w-[280px] h-[280px] flex items-center justify-center">
+        <div
+            *ngIf="isRunning"
+            class="absolute w-full h-full rounded-full bg-pink-300 opacity-30 blur-2xl animate-pulse"
+        ></div>
+
+        <div class="relative w-[260px] h-[260px] rounded-full bg-white/80 backdrop-blur-md shadow-xl border border-white/40 flex items-center justify-center">
+            <circle-progress
+                [percent]="getProgressPercent()"
+                [animation]="false"
+                [radius]="100"
+                [outerStrokeWidth]="12"
+                [outerStrokeColor]="'#f8b4d9'"
+                [showTitle]="false"
+                [showUnits]="false"
+                [showSubtitle]="false"
+                [showInnerStroke]="false"
+                [showBackground]="false"
+                [startFromZero]="false"
+                [renderOnClick]="false"
+                [clockwise]="false"
+            ></circle-progress>
+
+            <div class="absolute text-4xl font-cute text-pink-700 font-bold">
+                {{ formatTime() }}
+            </div>
+        </div>
+    </div>
+
+    <button
+        (click)="toggleTimer()"
+        title="toggleTimer"
+        class="px-10 py-4 rounded-full bg-pink-400 hover:bg-pink-500 text-white font-cute text-lg tracking-wide shadow-lg hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-pink-300 flex items-center gap-2"
+    >
+        <i [class]="isRunning ? 'fa-solid fa-pause' : 'fa-solid fa-play'"></i>
+    </button>
+
+    <div class="text-pink-600 font-semibold text-lg mb-2 tracking-wide">
+        {{ sessionType === 'work' ? 'Focus time! 💪' : 'Break time! ☕' }}
+    </div>
+
+    <div class="flex flex-wrap gap-3 justify-center mt-6 text-3xl">
+        <span *ngFor="let emoji of emojis">{{ emoji }}</span>
+    </div>
+</div>
