@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { PomodoroComponent } from "./pomodoro/pomodoro.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [PomodoroComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

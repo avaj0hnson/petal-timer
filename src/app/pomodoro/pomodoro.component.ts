@@ -1,12 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { Component, ModuleWithProviders, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, ModuleWithProviders, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import confetti from 'canvas-confetti';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { TimelineComponent } from "../timeline/timeline.component";
+import { BadgePlaygroundComponent } from "../badge-playground/badge-playground.component";
 
 @Component({
   selector: 'app-pomodoro',
   standalone: true,
-  imports: [CommonModule, NgCircleProgressModule],
+  imports: [CommonModule, NgCircleProgressModule, TimelineComponent, BadgePlaygroundComponent],
   providers: [
     (NgCircleProgressModule.forRoot({
       radius: 100,
@@ -27,21 +29,39 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 })
 export class PomodoroComponent implements OnInit, OnDestroy{
   isRunning = false;
-  timeLeft = 5; // 25 * 60;
+  timeLeft = 2; // 25 * 60;
   intervalId: any;
   sessionType: 'work' | 'break' = 'work';
   completedSessions = 0;
-  emojis: string[] = [];
-
+  activeBadges: { emoji: string; x: number }[] = [];
+  badgeUnlockIndex = 0;
   longBreakInterval = 1; //4;
+  workEndSound!: HTMLAudioElement;
+  breakEndSound!: HTMLAudioElement;
 
   readonly sessionDurations = {
-    work: 25, // 25 * 60,
-    shortBreak: 5, // 5 * 60,
-    longBreak: 15 // 15 * 60
+    work: 2, // 25 * 60,
+    shortBreak: 1, // 5 * 60,
+    longBreak: 1 // 15 * 60
   };
 
-  ngOnInit(): void {}
+  readonly allBadges = [
+    { emoji: '🌸' }, { emoji: '🧁' }, { emoji: '🎀' }, { emoji: '🌟' },
+    { emoji: '🐣' }, { emoji: '🧸' }, { emoji: '🥚' }, { emoji: '🎈' },
+    { emoji: '🍓' }, { emoji: '☁️' }
+  ];
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.workEndSound = new Audio('sounds/work-end.mp3');
+      this.breakEndSound = new Audio('sounds/break-end.mp3');
+  
+      this.workEndSound.load();
+      this.breakEndSound.load();
+    }
+  }
 
   ngOnDestroy(): void {
     clearInterval(this.intervalId);
@@ -63,13 +83,41 @@ export class PomodoroComponent implements OnInit, OnDestroy{
     }
   }
 
+  unlockBadge(): void {
+    if (this.badgeUnlockIndex < this.allBadges.length) {
+      const badge = this.allBadges[this.badgeUnlockIndex];
+      const slotSpacing = 10; // Each badge spaced 10%
+      const leftPosition = 5 + this.badgeUnlockIndex * slotSpacing; // Starting from 5%
+
+      this.activeBadges.push({
+        emoji: badge.emoji,
+        x: leftPosition,
+      });
+
+      this.badgeUnlockIndex++;
+
+      // Move the new badge into its spot
+      setTimeout(() => {
+        const badgeElems = document.querySelectorAll('[data-final-left]');
+        const lastBadge = badgeElems[badgeElems.length - 1] as HTMLElement;
+        const finalLeft = lastBadge.getAttribute('data-final-left');
+
+        if (lastBadge && finalLeft) {
+          lastBadge.style.left = finalLeft + '%';
+        }
+      }, 50);
+    }
+  }
+
   completeSession(): void {
     clearInterval(this.intervalId);
     this.isRunning = false;
   
     if (this.sessionType === 'work') {
+      this.workEndSound.play();
+
       this.completedSessions++;
-      this.emojis.push(this.getRandomEmoji());
+      this.unlockBadge();
       this.sessionType = 'break';
   
       const isLongBreak = this.completedSessions % this.longBreakInterval === 0;
@@ -81,6 +129,8 @@ export class PomodoroComponent implements OnInit, OnDestroy{
           this.launchConfetti();
         }
     } else {
+      this.breakEndSound.play();
+
       this.sessionType = 'work';
       this.timeLeft = this.sessionDurations.work;
     } 

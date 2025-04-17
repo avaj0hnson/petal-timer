@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EarnedBadgesComponent } from './earned-badges.component';
+import { SettingsModalComponent } from './settings-modal.component';
 
-describe('EarnedBadgesComponent', () => {
-  let component: EarnedBadgesComponent;
-  let fixture: ComponentFixture<EarnedBadgesComponent>;
+describe('SettingsModalComponent', () => {
+  let component: SettingsModalComponent;
+  let fixture: ComponentFixture<SettingsModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EarnedBadgesComponent]
+      imports: [SettingsModalComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EarnedBadgesComponent);
+    fixture = TestBed.createComponent(SettingsModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
