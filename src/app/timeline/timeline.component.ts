@@ -1,23 +1,22 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnInit, PLATFORM_ID, SimpleChanges } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { DateTime } from 'luxon';
 import { FormsModule } from '@angular/forms';
-import { SettingsModalComponent } from "../settings-modal/settings-modal.component";
 
 @Component({
   selector: 'app-timeline',
   standalone: true,
-  imports: [CommonModule, FormsModule, SettingsModalComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss']
 })
-export class TimelineComponent implements OnInit {
+export class TimelineComponent implements OnInit, OnChanges {
+  @Input() startHour: number = 8;
+  @Input() endHour: number = 17;
+  
   timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  startHour: number = 8;
-  endHour: number = 17;
   hours: number[] = Array.from({ length: 24 }, (_, i) => i);
   currentProgress = 0;
-  showSettings = false;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
@@ -28,6 +27,12 @@ export class TimelineComponent implements OnInit {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['startHour'] || changes['endHour']) {
+      this.updateProgress();
+    }
+  }
+  
   updateProgress(): void {
     const now = DateTime.now().setZone(this.timezone);
   
@@ -57,23 +62,5 @@ export class TimelineComponent implements OnInit {
     const displayHour = hour % 12 || 12;
     const period = hour >= 12 ? 'PM' : 'AM';
     return `${displayHour}:00 ${period}`;
-  }  
-
-  openSettings(): void {
-    this.showSettings = true;
-  }
-  
-  closeSettings(): void {
-    this.showSettings = false;
-  }
-  
-  onStartHourChange(newHour: number): void {
-    this.startHour = newHour;
-    this.updateProgress();
-  }
-  
-  onEndHourChange(newHour: number): void {
-    this.endHour = newHour;
-    this.updateProgress();
   }
 }

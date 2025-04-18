@@ -36,6 +36,18 @@
                 <option *ngFor="let hour of validEndHours" [value]="hour">{{ formatHour(hour) }}</option>
                 </select>
             </div>
+
+            <!-- Mute Sounds Toggle -->
+            <div class="flex items-center gap-2">
+                <input
+                    type="checkbox"
+                    [(ngModel)]="muted"
+                    (ngModelChange)="mutedChange.emit($event)"
+                    class="form-checkbox h-5 w-5 text-pink-500 rounded focus:ring-pink-300"
+                    id="muteToggle"
+                />
+                <label for="muteToggle" class="text-pink-400 text-sm">Mute Sounds</label>
+            </div>
         </div>
     </div>
 </div>
