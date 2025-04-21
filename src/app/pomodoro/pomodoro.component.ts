@@ -40,12 +40,11 @@ export class PomodoroComponent implements OnInit, OnDestroy{
   longBreakInterval = 4;
   timeLeft$!: Observable<number>;
   activeBadges!: { emoji: string; x: number }[];
-  initialSessionDuration = 5; //25 * 60; 
 
   readonly sessionDurations = {
-    work: 5, //25 * 60,
-    shortBreak: 2, // 5 * 60,
-    longBreak: 3 // 15 * 60,
+    work: 25 * 60,
+    shortBreak: 5 * 60,
+    longBreak: 15 * 60,
   };
 
   constructor(private timerService: PomodoroTimerService,
