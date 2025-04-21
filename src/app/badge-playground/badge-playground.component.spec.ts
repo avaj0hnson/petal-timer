@@ -20,4 +20,12 @@ describe('BadgePlaygroundComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should accept activeBadges input', () => {
+    component.activeBadges = [{ emoji: '🌸', x: 100 }];
+    fixture.detectChanges();
+  
+    expect(component.activeBadges.length).toBe(1);
+    expect(component.activeBadges[0].emoji).toBe('🌸');
+  });
 });
