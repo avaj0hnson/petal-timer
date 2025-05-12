@@ -43,7 +43,7 @@ A cute, modern Pomodoro timer built for real 8–5 workdays — complete with cu
 ```text
 src/
 ├── app/
-│ ├── badge-playground/ # Experimental or dev-only badge testing
+│ ├── badge-playground/ # Badges rewarded for completed sessions
 │ ├── pomodoro/ # Core Pomodoro timer logic and components
 │ ├── settings-modal/ # Settings and customization UI
 │ ├── timeline/ # Session history and visual progress timeline
