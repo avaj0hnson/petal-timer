@@ -1,27 +1,68 @@
-# PetalTimer
+# 🌸 Petal Timer
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.3.
+A cute, modern Pomodoro timer built for real 8–5 workdays — complete with customizable sessions, live progress tracking, and motivating visuals. Designed to help you stay focused, structured, and stylish.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## ✨ Features
 
-## Code scaffolding
+- ⏱ **Workday-Based Pomodoro Flow**: Aligns with a standard 8–5 schedule,
+- 🛠 **Customizable Sessions**: Set your own preferred hours.
+- 📊 **Live Progress Tracker**: See your session history and performance over time.
+- 🌸 **Cute UI & Rewards**: Light pink theme with soft animations and collectible badges after each session.
+- 🔔 **Sound Alerts**: Customizable sounds to notify you when it’s time to switch.
+- 📱 **Responsive Design**: Looks great across desktop and mobile.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+---
 
-## Build
+## 🧱 Built With
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- [Angular](https://angular.io/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [RxJS](https://rxjs.dev/) & Component Store
+- [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) for user persistence
 
-## Running unit tests
+---
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## 🚀 Getting Started
 
-## Running end-to-end tests
+1. Clone the repo  
+   ```bash
+   git clone https://github.com/avaj0hnson/petal-timer.git
+   cd petal-timer
+2. Install dependencies
+   ```bash
+   npm install
+3. Run Locally
+   ```bash
+   ng serve
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+---
 
-## Further help
+## 📁 Project Structure
+```text
+src/
+├── app/
+│ ├── badge-playground/ # Experimental or dev-only badge testing
+│ ├── pomodoro/ # Core Pomodoro timer logic and components
+│ ├── settings-modal/ # Settings and customization UI
+│ ├── timeline/ # Session history and visual progress timeline
+│ ├── app.component.* # Root component files
+│ ├── app.config.ts # App-level configuration
+│ ├── app.config.server.ts # Server-side config
+├── assets/ # Static assets
+├── index.html # Main HTML entry point
+├── main.ts # Client bootstrap
+├── main.server.ts # Server-side bootstrap
+├── styles.scss # Global styles
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+
+## 🧪 Testing
+
+Each component includes unit tests using Angular’s built-in test utilities and `HttpClientTestingModule`.
+
+To run tests:
+```bash
+ng test
