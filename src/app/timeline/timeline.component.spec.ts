@@ -69,7 +69,7 @@ describe('TimelineComponent', () => {
   
     const now = mockNowAtMinutesSinceStart(startHour, halfWorkMinutes);
   
-    spyOn(DateTime, 'now').and.returnValue(now); // ✅ No TypeScript error now
+    spyOn(DateTime, 'now').and.returnValue(now);
   
     component.updateProgress();
   

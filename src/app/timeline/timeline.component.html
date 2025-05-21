@@ -1,24 +1,14 @@
 <div class="w-full py-2 flex flex-col gap-6">
-    <!-- Timeline Labels + Settings Gear (Same Row) -->
     <div class="relative w-full flex items-center justify-between text-sm text-pink-400 font-semibold px-2 mb-2">
-
-        <!-- Start Time -->
         <span>{{ formatHour(startHour) }}</span>
-
-        <!-- End Time -->
         <span>{{ formatHour(endHour) }}</span>
     </div>
 
-    <!-- Progress Bar -->
     <div class="relative w-full h-8 bg-pink-100 rounded-full overflow-hidden shadow-inner">
-
-        <!-- Progress Fill -->
         <div
             class="absolute top-0 left-0 h-full bg-gradient-to-r from-pink-400 via-pink-300 to-pink-400 transition-all duration-700 ease-in-out"
             [style.width.%]="currentProgress"
         ></div>
-
-        <!-- Centered % Text -->
         <div class="absolute inset-0 flex items-center justify-center">
             <span class="text-pink-600 font-cute text-base tracking-wider">
                 {{ currentProgress | number: '1.0-0' }}%

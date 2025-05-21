@@ -116,7 +116,7 @@ describe('PomodoroComponent', () => {
     expect(component.getProgressPercent(750)).toBeCloseTo(50);
 
     component.sessionType = 'break';
-    expect(component.getProgressPercent(300)).toBe(0); // short break
+    expect(component.getProgressPercent(300)).toBe(0);
   });
 
   it('should stop timer on destroy', () => {

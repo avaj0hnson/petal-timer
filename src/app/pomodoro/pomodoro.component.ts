@@ -59,7 +59,7 @@ export class PomodoroComponent implements OnInit, OnDestroy{
     this.activeBadges = this.badgeService.activeBadges;
   
     this.timerService.setInitialTime(this.sessionDurations.work);
-  
+
     this.timerService.timeLeftCompleted$.subscribe(() => {
       this.completeSession();
     });
@@ -93,12 +93,14 @@ export class PomodoroComponent implements OnInit, OnDestroy{
         ? this.sessionDurations.longBreak
         : this.sessionDurations.shortBreak;
       
-      this.timerService.setInitialTime(nextDuration);
+      this.timerService.start(nextDuration);
+      this.isRunning = true;
       this.confettiService.launchConfetti();
     } else {
       this.soundService.playBreakEnd();
       this.sessionType = 'work';
-      this.timerService.setInitialTime(this.sessionDurations.work);
+      this.timerService.start(this.sessionDurations.work);
+      this.isRunning = true;
     }
   }
   
