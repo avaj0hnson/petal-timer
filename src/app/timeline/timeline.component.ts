@@ -39,7 +39,6 @@ export class TimelineComponent implements OnInit, OnChanges {
     const startOfWorkday = now.set({ hour: this.startHour, minute: 0, second: 0 });
     const endOfWorkday = now.set({ hour: this.endHour, minute: 0, second: 0 });
   
-    // Calculate total work minutes dynamically (NO lunch subtraction)
     const totalWorkMinutes = (this.endHour - this.startHour) * 60;
   
     if (now < startOfWorkday) {
@@ -52,7 +51,6 @@ export class TimelineComponent implements OnInit, OnChanges {
       return;
     }
   
-    // Work minutes passed since start
     const workMinutesElapsed = now.diff(startOfWorkday, 'minutes').minutes;
   
     this.currentProgress = Math.max(0, Math.min((workMinutesElapsed / totalWorkMinutes) * 100, 100));
