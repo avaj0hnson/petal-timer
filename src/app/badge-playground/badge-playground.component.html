@@ -1,8 +1,15 @@
-<div class="w-full bg-pink-50 rounded-xl shadow-inner flex flex-wrap justify-center items-center gap-4 p-4">
+<div
+    class="w-full bg-pink-50 rounded-xl shadow-inner flex flex-wrap justify-center items-center gap-4 p-4"
+    role="list"
+    aria-label="Earned badges"
+>
     <div
         *ngFor="let badge of activeBadges"
+        role="listitem"
         class="text-4xl transition-transform duration-300 ease-out hover:scale-125 cursor-pointer"
+        [attr.aria-label]="badge.name || 'Badge'"
+        [attr.title]="badge.name || 'Badge'"
     >
-        {{ badge.emoji }}
+        <span aria-hidden="true">{{ badge.emoji }}</span>
     </div>
 </div>

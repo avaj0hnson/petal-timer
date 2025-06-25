@@ -39,7 +39,7 @@ export class PomodoroComponent implements OnInit, OnDestroy{
   completedSessions = 0;
   longBreakInterval = 4;
   timeLeft$!: Observable<number>;
-  activeBadges!: { emoji: string; x: number }[];
+  activeBadges!: { emoji: string; x: number, name: string }[];
 
   readonly sessionDurations = {
     work: 25 * 60,
