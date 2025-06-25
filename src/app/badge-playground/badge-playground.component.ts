@@ -9,5 +9,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './badge-playground.component.scss'
 })
 export class BadgePlaygroundComponent {
-  @Input() activeBadges: { emoji: string; x: number }[] = [];
+  @Input() activeBadges: { emoji: string; x: number, name: string }[] = [];
 }

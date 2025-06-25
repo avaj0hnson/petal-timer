@@ -7,11 +7,12 @@
 >
     <div class="absolute top-6 right-6">
         <button
+            aria-label="Open settings"
             (click)="settingsService.openSettings()"
             title="Settings"
             class="text-pink-400 hover:text-pink-600 transition text-3xl p-2 rounded-full hover:bg-pink-100 focus:outline-none focus:ring-2 focus:ring-pink-300"
         >
-            <i class="fa-solid fa-gear"></i>
+            <i class="fa-solid fa-gear" aria-hidden="true"></i>
         </button>
     </div>
     <div class="flex flex-col md:flex-row items-center justify-center gap-12 w-full max-w-6xl">
@@ -44,10 +45,11 @@
 
             <button
                 (click)="toggleTimer()"
+                [attr.aria-label]="isRunning ? 'Pause timer' : 'Start timer'"
                 title="toggleTimer"
                 class="px-8 py-3 rounded-full bg-pink-400 hover:bg-pink-500 text-white font-cute text-lg tracking-wide shadow-lg hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-pink-300 flex items-center gap-2"
             >
-                <i [class]="isRunning ? 'fa-solid fa-pause' : 'fa-solid fa-play'"></i>
+                <i [class]="isRunning ? 'fa-solid fa-pause' : 'fa-solid fa-play'" aria-hidden="true"></i>
             </button>
 
             <div class="text-pink-600 font-semibold text-lg tracking-wide">
