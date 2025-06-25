@@ -23,7 +23,7 @@ describe('PomodoroComponent', () => {
     timeLeftCompletedSubject = new Subject<void>();
 
     mockTimerService = jasmine.createSpyObj('PomodoroTimerService', [
-      'setInitialTime', 'pause', 'resume', 'stop'
+      'setInitialTime', 'pause', 'resume', 'stop', 'start'
     ], {
       timeLeft$: of(1500), // 25 minutes
       timeLeftCompleted$: timeLeftCompletedSubject.asObservable()
@@ -79,29 +79,29 @@ describe('PomodoroComponent', () => {
   it('should complete work session correctly', () => {
     component.sessionType = 'work';
     component.completedSessions = 0;
-
+  
     timeLeftCompletedSubject.next();
-
-    expect(component.isRunning).toBeFalse();
+  
+    expect(component.isRunning).toBeTrue();
     expect(component.sessionType).toBe('break');
     expect(component.completedSessions).toBe(1);
     expect(mockSoundService.playWorkEnd).toHaveBeenCalled();
     expect(mockBadgeService.unlockNextBadge).toHaveBeenCalled();
-    expect(mockTimerService.setInitialTime).toHaveBeenCalledWith(component.sessionDurations.shortBreak);
+    expect(mockTimerService.start).toHaveBeenCalledWith(component.sessionDurations.shortBreak);
     expect(mockConfettiService.launchConfetti).toHaveBeenCalled();
-  });
+  });  
 
   it('should complete break session correctly', () => {
     component.sessionType = 'break';
     component.completedSessions = 2;
-
+  
     timeLeftCompletedSubject.next();
-
-    expect(component.isRunning).toBeFalse();
+  
+    expect(component.isRunning).toBeTrue();
     expect(component.sessionType).toBe('work');
     expect(mockSoundService.playBreakEnd).toHaveBeenCalled();
-    expect(mockTimerService.setInitialTime).toHaveBeenCalledWith(component.sessionDurations.work);
-  });
+    expect(mockTimerService.start).toHaveBeenCalledWith(component.sessionDurations.work);
+  });  
 
   it('should format time correctly', () => {
     expect(component.formatTime(0)).toBe('00:00');

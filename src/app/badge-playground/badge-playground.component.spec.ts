@@ -22,10 +22,11 @@ describe('BadgePlaygroundComponent', () => {
   });
 
   it('should accept activeBadges input', () => {
-    component.activeBadges = [{ emoji: '🌸', x: 100 }];
+    component.activeBadges = [{ emoji: '🌸', x: 100, name: 'Cherry Blossom' }];
     fixture.detectChanges();
   
     expect(component.activeBadges.length).toBe(1);
     expect(component.activeBadges[0].emoji).toBe('🌸');
+    expect(component.activeBadges[0].name).toBe('Cherry Blossom');
   });
 });
