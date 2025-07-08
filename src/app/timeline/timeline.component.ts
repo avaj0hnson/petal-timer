@@ -13,7 +13,10 @@ import { FormsModule } from '@angular/forms';
 export class TimelineComponent implements OnInit, OnChanges {
   @Input() startHour: number = 8;
   @Input() endHour: number = 17;
-  
+  @Input() textClass = '';
+  @Input() progressColorClass = '';
+  @Input() backgroundClass = '';
+
   timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
   hours: number[] = Array.from({ length: 24 }, (_, i) => i);
   currentProgress = 0;

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,4 +10,15 @@ import { CommonModule } from '@angular/common';
 })
 export class BadgePlaygroundComponent {
   @Input() activeBadges: { emoji: string; x: number, name: string }[] = [];
+  @Input() textClass = '';
+  @Input() modalBackgroundClass = '';
+  @Output() restart = new EventEmitter<void>();
+
+  restartBadges() {
+    this.restart.emit();
+  }
+
+  get allBadgesUnlocked(): boolean {
+    return this.activeBadges.length > 13;
+  }
 }

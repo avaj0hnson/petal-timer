@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Settings } from '../models/settings';
+import { Settings } from '../models/settings.model';
 
 const SETTINGS_KEY = 'appSettings';
 

@@ -1,15 +1,38 @@
 <div
-    class="w-full bg-pink-50 rounded-xl shadow-inner flex flex-wrap justify-center items-center gap-4 p-4"
+    class="w-full rounded-xl shadow-inner flex flex-col items-center justify-center gap-4 p-4"
+    [ngClass]="modalBackgroundClass"
     role="list"
     aria-label="Earned badges"
 >
-    <div
-        *ngFor="let badge of activeBadges"
-        role="listitem"
-        class="text-4xl transition-transform duration-300 ease-out hover:scale-125 cursor-pointer"
-        [attr.aria-label]="badge.name || 'Badge'"
-        [attr.title]="badge.name || 'Badge'"
-    >
-        <span aria-hidden="true">{{ badge.emoji }}</span>
+    <!-- Badges -->
+    <div class="flex flex-wrap justify-center items-center gap-4 w-full">
+        <div
+            *ngFor="let badge of activeBadges"
+            role="listitem"
+            class="text-4xl transition-transform duration-300 ease-out hover:scale-125 cursor-pointer"
+            [ngClass]="textClass"
+            [attr.aria-label]="badge.name || 'Badge'"
+            [attr.title]="badge.name || 'Badge'"
+        >
+            <span aria-hidden="true">{{ badge.emoji }}</span>
+        </div>
+    </div>
+
+    <!-- Completion Message + Restart Button -->
+    <div *ngIf="allBadgesUnlocked" class="flex flex-col items-center justify-center mt-4 gap-2">
+        <div [ngClass]="[textClass, 'text-xl font-cute font-bold']">
+            All badges unlocked! 🎉
+        </div>
+        <button
+            (click)="restartBadges()"
+            aria-label="Restart badges"
+            title="Restart"
+            [ngClass]="[
+                'text-2xl p-2 rounded-full hover:rotate-180 transition-transform duration-300',
+                textClass
+            ]"
+        >
+            <i class="fa-solid fa-rotate-right"></i>
+        </button>
     </div>
 </div>

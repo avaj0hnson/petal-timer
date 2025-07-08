@@ -1,101 +1,143 @@
-<div
-    class="flex flex-col items-center justify-start min-h-screen w-full bg-blush-light transition-colors duration-500 p-8"
-    [ngClass]="{
-        'bg-blush-light': sessionType === 'work',
-        'bg-softwhite': sessionType === 'break'
-    }"
->
-    <div class="absolute top-6 right-6">
-        <button
-            aria-label="Open settings"
-            (click)="settingsService.openSettings()"
-            title="Settings"
-            class="text-pink-400 hover:text-pink-600 transition text-3xl p-2 rounded-full hover:bg-pink-100 focus:outline-none focus:ring-2 focus:ring-pink-300"
+<ng-container *ngIf="themeReady$ | async">
+    <ng-container *ngIf="theme$ | async as theme">
+        <div
+            class="flex flex-col items-center justify-start min-h-screen w-full transition-colors duration-500 p-8"
+            [ngClass]="theme.backgroundClass"
         >
-            <i class="fa-solid fa-gear" aria-hidden="true"></i>
-        </button>
-    </div>
-    <div class="flex flex-col md:flex-row items-center justify-center gap-12 w-full max-w-6xl">
-        <div class="flex flex-col items-center gap-6">
-            <div class="relative w-[300px] h-[300px] flex items-center justify-center">
-                <div *ngIf="isRunning" class="absolute w-full h-full rounded-full bg-pink-300 opacity-30 blur-2xl animate-pulse"></div>
-                <div class="relative w-[280px] h-[280px] rounded-full bg-white/80 backdrop-blur-md shadow-xl border border-white/40 flex items-center justify-center">
-                    <ng-container *ngIf="timeLeft$ | async as timeLeft">
-                        <circle-progress
-                        [percent]="getProgressPercent(timeLeft)"
-                        [animation]="false"
-                        [radius]="100"
-                        [outerStrokeWidth]="12"
-                        [outerStrokeColor]="'#f8b4d9'"
-                        [showTitle]="false"
-                        [showUnits]="false"
-                        [showSubtitle]="false"
-                        [showInnerStroke]="false"
-                        [showBackground]="false"
-                        [startFromZero]="false"
-                        [renderOnClick]="false"
-                        [clockwise]="false"
-                        ></circle-progress>
-                        <div class="absolute text-4xl font-cute text-pink-700 font-bold">
-                        {{ formatTime(timeLeft) }}
+            <!-- Settings Button -->
+            <div class="absolute top-6 right-6">
+                <button
+                    aria-label="Open settings"
+                    (click)="settingsService.openSettings()"
+                    title="Settings"
+                    [ngClass]="[
+                        'transition text-3xl p-2 rounded-full hover:bg-opacity-10',
+                        theme.textClass,
+                        theme.focusRingClass
+                    ]"
+                >
+                    <i class="fa-solid fa-gear" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <!-- Timer + Status -->
+            <div class="flex flex-col md:flex-row items-center justify-center gap-12 w-full max-w-6xl">
+                <div class="flex flex-col items-center gap-6">
+                    <div class="relative w-[300px] h-[300px] flex items-center justify-center">
+                        <div
+                            *ngIf="isRunning"
+                            [ngClass]="['absolute w-full h-full rounded-full opacity-30 blur-2xl animate-pulse', theme.textClass]"
+                        ></div>
+                        <div [ngClass]="[theme.modalBackgroundClass, 'relative w-[280px] h-[280px] rounded-full shadow-xl flex items-center justify-center']">
+                        <ng-container *ngIf="timeLeft$ | async as timeLeft">
+                            <circle-progress
+                                [percent]="getProgressPercent(timeLeft)"
+                                [radius]="100"
+                                [outerStrokeWidth]="12"
+                                [outerStrokeColor]="theme.ringColor"
+                                [innerStrokeWidth]="8"
+                                [innerStrokeColor]="theme.progressTrackClass"
+                                [animation]="false"
+                                [showTitle]="false"
+                                [showUnits]="false"
+                                [showSubtitle]="false"
+                                [showInnerStroke]="false"
+                                [showBackground]="false"
+                                [startFromZero]="false"
+                                [renderOnClick]="false"
+                                [clockwise]="false"
+                            ></circle-progress>
+                                <div [ngClass]="[theme.textClass, 'absolute text-4xl font-cute font-bold']">
+                                    {{ formatTime(timeLeft) }}
+                                </div>
+                        </ng-container>
                         </div>
-                    </ng-container>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <!-- Start/Pause Button -->
+                        <button
+                            (click)="toggleTimer()"
+                            [attr.aria-label]="isRunning ? 'Pause timer' : 'Start timer'"
+                            title="toggleTimer"
+                            [ngClass]="[
+                                'px-8 py-3 rounded-full text-white font-cute text-lg tracking-wide shadow-lg hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 flex items-center gap-2',
+                                theme.buttonClass,
+                                theme.focusRingClass
+                            ]"
+                        >
+                            <i [class]="isRunning ? 'fa-solid fa-pause' : 'fa-solid fa-play'" aria-hidden="true"></i>
+                        </button>
+                        <!-- Skip Button -->
+                        <button
+                            (click)="skipSession()"
+                            aria-label="Skip session"
+                            title="Skip"
+                            [ngClass]="[
+                                'px-8 py-3 rounded-full text-white font-cute text-lg tracking-wide shadow-lg hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 flex items-center gap-2',
+                                theme.buttonClass,
+                                theme.focusRingClass
+                            ]"
+                            >
+                            <i class="fa-solid fa-forward" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                    <!-- Work/Break Label -->
+                    <div [ngClass]="[theme.textClass, 'font-semibold text-lg tracking-wide']">
+                        {{ sessionType === 'work' ? 'Focus time! 💪' : 'Break time! ☕' }}
+                    </div>
+                    </div>
+
+                    <!-- Badges -->
+                    <div class="flex flex-col items-center gap-4 w-full md:w-[500px]">
+                    <div [ngClass]="[theme.textClass, 'text-lg font-cute font-bold tracking-wide']">
+                        {{ activeBadges.length }} {{ activeBadges.length === 1 ? 'Badge' : 'Badges' }} Earned
+                    </div>
+                    <div class="w-full">
+                        <app-badge-playground 
+                            [activeBadges]="activeBadges"
+                            [textClass]="theme.textClass"
+                            [modalBackgroundClass]="theme.modalBackgroundClass"
+                            (restart)="restartBadges()"
+                        ></app-badge-playground>
+                    </div>
                 </div>
             </div>
 
-            <button
-                (click)="toggleTimer()"
-                [attr.aria-label]="isRunning ? 'Pause timer' : 'Start timer'"
-                title="toggleTimer"
-                class="px-8 py-3 rounded-full bg-pink-400 hover:bg-pink-500 text-white font-cute text-lg tracking-wide shadow-lg hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-pink-300 flex items-center gap-2"
-            >
-                <i [class]="isRunning ? 'fa-solid fa-pause' : 'fa-solid fa-play'" aria-hidden="true"></i>
-            </button>
-
-            <div class="text-pink-600 font-semibold text-lg tracking-wide">
-                {{ sessionType === 'work' ? 'Focus time! 💪' : 'Break time! ☕' }}
-            </div>
+            <!-- Timeline -->
+            <ng-container *ngIf="(settingsService.startHour$ | async) as startHour">
+                <ng-container *ngIf="(settingsService.endHour$ | async) as endHour">
+                    <div class="w-full max-w-5xl mt-12">
+                        <div [ngClass]="[theme.modalBackgroundClass, 'rounded-3xl shadow-lg p-8']">
+                            <app-timeline 
+                                [startHour]="startHour" 
+                                [endHour]="endHour"
+                                [textClass]="theme.textClass"
+                                [progressColorClass]="theme.progressFillClass"
+                                [backgroundClass]="theme.progressTrackClass "
+                            ></app-timeline>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
         </div>
 
-        <div class="flex flex-col items-center gap-4 w-full md:w-[500px]">
-            <div class="text-pink-500 text-lg font-cute font-bold tracking-wide">
-                {{ activeBadges.length }} {{ activeBadges.length === 1 ? 'Badge' : 'Badges' }} Earned
-            </div>
-
-            <div class="w-full">
-                <app-badge-playground [activeBadges]="activeBadges"></app-badge-playground>
-            </div>
-        </div>
-    </div>
-
-    <ng-container *ngIf="(settingsService.startHour$ | async) as startHour">
-        <ng-container *ngIf="(settingsService.endHour$ | async) as endHour">
-            <div class="w-full max-w-5xl mt-12">
-                <div class="bg-white rounded-3xl shadow-lg p-8">
-                <app-timeline
-                    [startHour]="startHour"
-                    [endHour]="endHour"
-                ></app-timeline>
-                </div>
-            </div>
-        </ng-container>
-    </ng-container>  
-</div>
-
-<ng-container *ngIf="settingsService.showSettings$ | async">
-    <ng-container *ngIf="(settingsService.startHour$ | async) as startHourForModal">
-        <ng-container *ngIf="(settingsService.endHour$ | async) as endHourForModal">
-            <app-settings-modal
-            [startHour]="startHourForModal"
-            [endHour]="endHourForModal"
-            [muted]="(settingsService.muted$ | async)!"
-            (startHourChange)="settingsService.setStartHour($event)"
-            (endHourChange)="settingsService.setEndHour($event)"
-            (mutedChange)="settingsService.setMuted($event)"
-            (close)="settingsService.closeSettings()"
-            ></app-settings-modal>
+        <!-- Settings Modal -->
+        <ng-container *ngIf="settingsService.showSettings$ | async">
+            <ng-container *ngIf="(settingsService.startHour$ | async) as startHourForModal">
+                <ng-container *ngIf="(settingsService.endHour$ | async) as endHourForModal">
+                    <app-settings-modal
+                        [startHour]="startHourForModal"
+                        [endHour]="endHourForModal"
+                        [muted]="(settingsService.muted$ | async)!"
+                        (startHourChange)="settingsService.setStartHour($event)"
+                        (endHourChange)="settingsService.setEndHour($event)"
+                        (mutedChange)="settingsService.setMuted($event)"
+                        (close)="settingsService.closeSettings()"
+                    ></app-settings-modal>
+                </ng-container>
+            </ng-container>
         </ng-container>
     </ng-container>
 </ng-container>
-
-
