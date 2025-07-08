@@ -1,34 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { Component, ModuleWithProviders, OnDestroy, OnInit } from '@angular/core';
-import { NgCircleProgressModule } from 'ng-circle-progress';
+import { CircleProgressOptions, NgCircleProgressModule } from 'ng-circle-progress';
 import { TimelineComponent } from "../timeline/timeline.component";
 import { BadgePlaygroundComponent } from "../badge-playground/badge-playground.component";
-import { PomodoroTimerService } from './services/pomodoro-timer.service';
-import { SoundService } from './services/sound.service';
-import { BadgeService } from './services/badge.service';
-import { ConfettiService } from './services/confetti.service';
+import { PomodoroTimerService } from '../services/pomodoro-timer.service';
+import { SoundService } from '../services/sound.service';
+import { BadgeService } from '../services/badge.service';
+import { ConfettiService } from '../services/confetti.service';
 import { Observable } from 'rxjs';
 import { SettingsModalComponent } from "../settings-modal/settings-modal.component";
-import { SettingsService } from './services/settings.service';
+import { SettingsService } from '../services/settings.service';
+import { ThemeService } from '../services/theme.service';
+import { Theme } from '../models/theme.model';
 
 @Component({
   selector: 'app-pomodoro',
   standalone: true,
   imports: [CommonModule, NgCircleProgressModule, TimelineComponent, BadgePlaygroundComponent, SettingsModalComponent],
   providers: [
-    (NgCircleProgressModule.forRoot({
-      radius: 100,
-      outerStrokeWidth: 12,
-      outerStrokeColor: '#f8b4d9',
-      innerStrokeWidth: 8,
-      innerStrokeColor: '#ffeaf4',
-      animationDuration: 300,
-      animation: true,
-      showTitle: false,
-      showUnits: false,
-      showBackground: false,
-      clockwise: false,
-    }) as ModuleWithProviders<NgCircleProgressModule>).providers!,
+    { provide: CircleProgressOptions, useValue: {} }
   ],
   templateUrl: './pomodoro.component.html',
   styleUrl: './pomodoro.component.scss'
@@ -38,8 +28,10 @@ export class PomodoroComponent implements OnInit, OnDestroy{
   sessionType: 'work' | 'break' = 'work';
   completedSessions = 0;
   longBreakInterval = 4;
-  timeLeft$!: Observable<number>;
   activeBadges!: { emoji: string; x: number, name: string }[];
+  theme$!: Observable<Theme>;
+  themeReady$!: Observable<boolean>;
+  timeLeft$!: Observable<number>;
 
   readonly sessionDurations = {
     work: 25 * 60,
@@ -51,10 +43,17 @@ export class PomodoroComponent implements OnInit, OnDestroy{
               private soundService: SoundService,
               private badgeService: BadgeService,
               private confettiService: ConfettiService,
-              public settingsService: SettingsService
+              public settingsService: SettingsService,
+              private themeService: ThemeService
   ) {}
   
   ngOnInit(): void {
+    this.themeReady$ = this.themeService.themeReady$;
+    this.theme$ = this.themeService.currentTheme$;
+    this.theme$.subscribe(theme => {
+      this.badgeService.setBadgeSet(theme.badgeSet);
+      this.activeBadges = this.badgeService.activeBadges;
+    });
     this.timeLeft$ = this.timerService.timeLeft$;
     this.activeBadges = this.badgeService.activeBadges;
   
@@ -76,6 +75,11 @@ export class PomodoroComponent implements OnInit, OnDestroy{
       this.timerService.resume();
     }
     this.isRunning = !this.isRunning;
+  }
+
+  skipSession(): void {
+    this.timerService.stop();
+    this.completeSession();
   }
   
   private completeSession(): void {
@@ -120,4 +124,9 @@ export class PomodoroComponent implements OnInit, OnDestroy{
 
     return ((total - timeLeft) / total) * 100;
   }
+
+  restartBadges(): void {
+    this.badgeService.setBadgeSet(this.badgeService.getCurrentBadgeSet());
+    this.activeBadges = this.badgeService.activeBadges;
+  }  
 }

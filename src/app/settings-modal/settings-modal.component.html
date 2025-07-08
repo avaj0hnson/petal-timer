@@ -6,7 +6,8 @@
     cdkTrapFocus
 >
     <div
-        class="bg-white rounded-2xl shadow-lg p-8 w-80 flex flex-col gap-6 relative"
+        class="rounded-2xl shadow-lg p-8 w-80 flex flex-col gap-6 relative"
+        [ngClass]="[currentTheme.backgroundClass, currentTheme.textClass]"
         tabindex="-1"
     >
         <!-- Close Button -->
@@ -14,26 +15,52 @@
             (click)="close.emit()"
             title="Close"
             aria-label="Close settings"
-            class="absolute top-4 right-4 text-gray-400 hover:text-pink-400 text-2xl"
+            class="absolute top-4 right-4 text-2xl transition-colors"
+            [ngClass]="[currentTheme.iconButtonClass]"
         >
             <i class="fa-solid fa-xmark" aria-hidden="true"></i>
         </button>
 
         <!-- Modal Heading -->
-        <h2 id="settings-heading" class="text-pink-500 font-bold text-xl text-center">
+        <h2
+            id="settings-heading"
+            class="font-bold text-xl text-center"
+            [ngClass]="[currentTheme.textClass]"
+        >
             Settings
         </h2>
 
         <!-- Settings Form -->
         <div class="flex flex-col gap-4">
+            <!-- Theme Selector -->
+            <div class="flex flex-col">
+                <label for="themeSelect" class="text-sm mb-1" [ngClass]="[currentTheme.textClass]">
+                Theme
+                </label>
+                <select
+                id="themeSelect"
+                [(ngModel)]="selectedThemeName"
+                (ngModelChange)="onThemeChange($event)"
+                class="rounded-full px-3 py-2 shadow-inner border"
+                [ngClass]="[currentTheme.textClass, currentTheme.focusRingClass, 'border-opacity-50']"
+                >
+                <option *ngFor="let theme of themes" [value]="theme.name">
+                    {{ theme.name }}
+                </option>
+                </select>
+            </div>
+
             <!-- Start Time -->
             <div class="flex flex-col">
-                <label for="startHourSelect" class="text-pink-400 text-sm mb-1">Start Time</label>
+                <label for="startHourSelect" class="text-sm mb-1" [ngClass]="[currentTheme.textClass]">
+                    Start Time
+                </label>
                 <select
                     id="startHourSelect"
                     [(ngModel)]="startHour"
                     (ngModelChange)="startHourChange.emit($event)"
-                    class="rounded-full border-pink-300 text-pink-600 px-3 py-2 shadow-inner"
+                    class="rounded-full px-3 py-2 shadow-inner border"
+                    [ngClass]="[currentTheme.textClass, currentTheme.focusRingClass, 'border-opacity-50']"
                 >
                     <option *ngFor="let hour of validStartHours" [value]="hour">
                         {{ formatHour(hour) }}
@@ -43,12 +70,15 @@
 
             <!-- End Time -->
             <div class="flex flex-col">
-                <label for="endHourSelect" class="text-pink-400 text-sm mb-1">End Time</label>
+                <label for="endHourSelect" class="text-sm mb-1" [ngClass]="[currentTheme.textClass]">
+                    End Time
+                </label>
                 <select
                     id="endHourSelect"
                     [(ngModel)]="endHour"
                     (ngModelChange)="endHourChange.emit($event)"
-                    class="rounded-full border-pink-300 text-pink-600 px-3 py-2 shadow-inner"
+                    class="rounded-full px-3 py-2 shadow-inner border"
+                    [ngClass]="[currentTheme.textClass, currentTheme.focusRingClass, 'border-opacity-50']"
                 >
                     <option *ngFor="let hour of validEndHours" [value]="hour">
                         {{ formatHour(hour) }}
@@ -63,9 +93,12 @@
                     id="muteToggle"
                     [(ngModel)]="muted"
                     (ngModelChange)="mutedChange.emit($event)"
-                    class="form-checkbox h-5 w-5 text-pink-500 rounded focus:ring-pink-300"
+                    class="form-checkbox h-5 w-5 rounded"
+                    [ngClass]="[currentTheme.textClass, currentTheme.focusRingClass]"
                 />
-                    <label for="muteToggle" class="text-pink-400 text-sm">Mute Sounds</label>
+                <label for="muteToggle" class="text-sm" [ngClass]="[currentTheme.textClass]">
+                    Mute Sounds
+                </label>
             </div>
         </div>
     </div>
