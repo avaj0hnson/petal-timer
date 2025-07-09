@@ -86,6 +86,51 @@
                 </select>
             </div>
 
+            <!-- Work Duration -->
+            <div class="flex flex-col">
+            <label for="workDuration" class="text-sm mb-1">Work Duration ({{ workDuration }} min)</label>
+            <input
+                type="range"
+                id="workDuration"
+                [(ngModel)]="workDuration"
+                (ngModelChange)="workDurationChange.emit($event)"
+                min="5"
+                max="180"
+                step="5"
+                class="w-full accent-current"
+            />
+            </div>
+
+            <!-- Short Break -->
+            <div class="flex flex-col">
+            <label for="shortBreakDuration" class="text-sm mb-1">Short Break ({{ shortBreakDuration }} min)</label>
+            <input
+                type="range"
+                id="shortBreakDuration"
+                [(ngModel)]="shortBreakDuration"
+                (ngModelChange)="shortBreakDurationChange.emit($event)"
+                min="1"
+                max="30"
+                step="1"
+                class="w-full accent-current"
+            />
+            </div>
+
+            <!-- Long Break -->
+            <div class="flex flex-col">
+            <label for="longBreakDuration" class="text-sm mb-1">Long Break ({{ longBreakDuration }} min)</label>
+            <input
+                type="range"
+                id="longBreakDuration"
+                [(ngModel)]="longBreakDuration"
+                (ngModelChange)="longBreakDurationChange.emit($event)"
+                min="5"
+                max="60"
+                step="5"
+                class="w-full accent-current"
+            />
+            </div>
+
             <!-- Mute Toggle -->
             <div class="flex items-center gap-2">
                 <input

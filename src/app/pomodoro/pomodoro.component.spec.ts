@@ -5,7 +5,7 @@ import { SoundService } from '../services/sound.service';
 import { BadgeService } from '../services/badge.service';
 import { ConfettiService } from '../services/confetti.service';
 import { SettingsService } from '../services/settings.service';
-import { of, Subject } from 'rxjs';
+import { BehaviorSubject, of, Subject } from 'rxjs';
 import { ThemeService } from '../services/theme.service';
 import { Theme } from '../models/theme.model';
 
@@ -24,14 +24,12 @@ describe('PomodoroComponent', () => {
 
   beforeEach(async () => {
     timeLeftCompletedSubject = new Subject<void>();
-
     mockTimerService = jasmine.createSpyObj('PomodoroTimerService', [
       'setInitialTime', 'pause', 'resume', 'stop', 'start'
     ], {
       timeLeft$: of(1500), // 25 minutes
       timeLeftCompleted$: timeLeftCompletedSubject.asObservable()
     });
-
     mockSoundService = jasmine.createSpyObj('SoundService', ['playWorkEnd', 'playBreakEnd']);
     mockBadgeService = jasmine.createSpyObj<BadgeService>(
       'BadgeService',
@@ -40,7 +38,10 @@ describe('PomodoroComponent', () => {
     mockBadgeService.activeBadges = [];    
     mockConfettiService = jasmine.createSpyObj('ConfettiService', ['launchConfetti']);
     mockSettingsService = jasmine.createSpyObj('SettingsService', [], {
-      muted$: of(false)
+      muted$: of(false),
+      workDuration$: of(25),
+      shortBreakDuration$: of(5),
+      longBreakDuration$: of(15)
     });
     mockThemeService = jasmine.createSpyObj('ThemeService', [], {
       themeReady$: of(true),
@@ -88,7 +89,6 @@ describe('PomodoroComponent', () => {
         { provide: ThemeService, useValue: mockThemeService }
       ]
     }).compileComponents();
-
     fixture = TestBed.createComponent(PomodoroComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -192,5 +192,5 @@ describe('PomodoroComponent', () => {
     expect(component.activeBadges).toEqual([
       { emoji: '🌟', name: 'Star', x: 10 }
     ]);
-  });  
+  });
 });

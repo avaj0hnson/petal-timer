@@ -112,4 +112,37 @@ describe('SettingsModalComponent', () => {
     expect(mockThemeService.switchTheme).toHaveBeenCalledWith('Galaxy');
     expect(component.selectedThemeName).toBe('Galaxy');
   });
+
+  it('should emit workDurationChange when slider value changes', () => {
+    spyOn(component.workDurationChange, 'emit');
+    component.workDuration = 50;
+    component.workDurationChange.emit(component.workDuration);
+    expect(component.workDurationChange.emit).toHaveBeenCalledWith(50);
+  });
+
+  it('should emit shortBreakDurationChange when slider value changes', () => {
+    spyOn(component.shortBreakDurationChange, 'emit');
+    component.shortBreakDuration = 10;
+    component.shortBreakDurationChange.emit(component.shortBreakDuration);
+    expect(component.shortBreakDurationChange.emit).toHaveBeenCalledWith(10);
+  });
+
+  it('should emit longBreakDurationChange when slider value changes', () => {
+    spyOn(component.longBreakDurationChange, 'emit');
+    component.longBreakDuration = 30;
+    component.longBreakDurationChange.emit(component.longBreakDuration);
+    expect(component.longBreakDurationChange.emit).toHaveBeenCalledWith(30);
+  });
+
+  it('should emit close when Escape key is pressed', () => {
+    spyOn(component.close, 'emit');
+    const event = new KeyboardEvent('keydown', { key: 'Escape' });
+    document.dispatchEvent(event);
+    expect(component.close.emit).toHaveBeenCalled();
+  });
+
+  it('should initialize with current theme from ThemeService', () => {
+    expect(component.currentTheme.name).toBe('Blush');
+    expect(component.selectedThemeName).toBe('Blush');
+  });
 });

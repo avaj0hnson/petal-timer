@@ -15,6 +15,12 @@ export class SettingsModalComponent {
   @Input() startHour!: number;
   @Input() endHour!: number;
   @Input() muted!: boolean;
+  @Input() workDuration!: number;
+  @Input() shortBreakDuration!: number;
+  @Input() longBreakDuration!: number;
+  @Output() workDurationChange = new EventEmitter<number>();
+  @Output() shortBreakDurationChange = new EventEmitter<number>();
+  @Output() longBreakDurationChange = new EventEmitter<number>();
   @Output() mutedChange = new EventEmitter<boolean>();
   @Output() startHourChange = new EventEmitter<number>();
   @Output() endHourChange = new EventEmitter<number>();
