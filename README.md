@@ -1,26 +1,29 @@
 # 🌸 Petal Timer
 
-A cute, modern Pomodoro timer built for real 8–5 workdays — complete with customizable sessions, live progress tracking, and motivating visuals. Designed to help you stay focused, structured, and stylish.
+A cute and modern Pomodoro timer built for realistic 8–5 workdays — complete with customizable sessions, motivating badges, themeable visuals, and real-time progress tracking. Stay focused, structured, and stylish.
 
 ---
 
 ## ✨ Features
 
-- ⏱ **Workday-Based Pomodoro Flow**: Aligns with a standard 8–5 schedule,
+- ⏱ **Workday-Based Pomodoro Flow**: Aligns with a standard 8–5 schedule.
 - 🛠 **Customizable Sessions**: Set your own preferred hours.
-- 📊 **Live Progress Tracker**: See your session history and performance over time.
-- 🌸 **Cute UI & Rewards**: Light pink theme with soft animations and collectible badges after each session.
-- 🔔 **Sound Alerts**: Customizable sounds to notify you when it’s time to switch.
-- 📱 **Responsive Design**: Looks great across desktop and mobile.
+- 📊 **Live Progress Tracker**: View your progress through the day at a glance.
+- 🌸 **Badges & Confetti**: Earn adorable rewards for every session you complete.
+- 🔔 **Sound Alerts**: Distinct alerts for work and break transitions.
+- 🎨 **Theme Support**: Choose from Blush, Galaxy, and Minty Fresh themes.
+- 🌐 **Offline-Ready** – Saves your preferences using local storage.
+- 📱 **Fully Responsive** – Optimized for desktop and mobile.
 
 ---
 
-## 🧱 Built With
+## 🧱 Tech Stack
 
 - [Angular](https://angular.io/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [RxJS](https://rxjs.dev/) & Component Store
 - [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) for user persistence
+- [canvas-confetti](https://www.npmjs.com/package/canvas-confetti)
 
 ---
 
@@ -47,6 +50,9 @@ src/
 │ ├── pomodoro/ # Core Pomodoro timer logic and components
 │ ├── settings-modal/ # Settings and customization UI
 │ ├── timeline/ # Session history and visual progress timeline
+│ ├── services/ # Sound, theme, conftetti, and timer logic
+│ ├── models/ # Type definitions for themes and settings
+│ ├── constants/ # Theme configurations and badge sets
 │ ├── app.component.* # Root component files
 │ ├── app.config.ts # App-level configuration
 │ ├── app.config.server.ts # Server-side config
