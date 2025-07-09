@@ -62,6 +62,36 @@ export class PomodoroComponent implements OnInit, OnDestroy{
     this.timerService.timeLeftCompleted$.subscribe(() => {
       this.completeSession();
     });
+
+    this.settingsService.workDuration$.subscribe(min => {
+      this.sessionDurations.work = min * 60;
+      if (this.sessionType === 'work' && !this.isRunning) {
+        this.timerService.setInitialTime(this.sessionDurations.work);
+      }
+      if (this.sessionType === 'work' && this.isRunning) {
+        this.timerService.start(this.sessionDurations.work);
+      }
+    });
+
+    this.settingsService.shortBreakDuration$.subscribe(min => {
+      this.sessionDurations.shortBreak = min * 60;
+      if (this.sessionType === 'break' && this.completedSessions % this.longBreakInterval !== 0 && !this.isRunning) {
+        this.timerService.setInitialTime(this.sessionDurations.shortBreak);
+      }
+      if (this.sessionType === 'break' && this.completedSessions % this.longBreakInterval !== 0 && this.isRunning) {
+        this.timerService.start(this.sessionDurations.shortBreak);
+      }
+    });
+
+    this.settingsService.longBreakDuration$.subscribe(min => {
+      this.sessionDurations.longBreak = min * 60;
+      if (this.sessionType === 'break' && this.completedSessions % this.longBreakInterval === 0 && !this.isRunning) {
+        this.timerService.setInitialTime(this.sessionDurations.longBreak);
+      }
+      if (this.sessionType === 'break' && this.completedSessions % this.longBreakInterval === 0 && this.isRunning) {
+        this.timerService.start(this.sessionDurations.longBreak);
+      }
+    });
   }  
 
   ngOnDestroy(): void {
