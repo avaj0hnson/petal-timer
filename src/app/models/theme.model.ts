@@ -12,4 +12,5 @@ export interface Theme {
     progressFillClass: string;
     modalBackgroundClass: string;
     badgeSet: { emoji: string; name: string }[];
+    confettiColors: string[];
 }
