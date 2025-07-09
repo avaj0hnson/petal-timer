@@ -36,7 +36,8 @@ describe('SettingsModalComponent', () => {
         { emoji: '🍩', name: 'Donut' },
         { emoji: '🍒', name: 'Cherries' },
         { emoji: '💗', name: 'Heart Sparkle' }
-    ]
+    ],
+    confettiColors: ['#ffd6e8', '#ffeaf4', '#f8b4d9', '#fcd3e1', '#fff0f6']
   };
 
   const mockThemeService = {

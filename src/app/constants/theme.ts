@@ -29,7 +29,8 @@ export const THEMES: Theme[] = [
             { emoji: '🍩', name: 'Donut' },
             { emoji: '🍒', name: 'Cherries' },
             { emoji: '💗', name: 'Heart Sparkle' }
-        ]
+        ],
+        confettiColors: ['#ffd6e8', '#ffeaf4', '#f8b4d9', '#fcd3e1', '#fff0f6']
     },
     {
         name: 'Galaxy',
@@ -59,7 +60,8 @@ export const THEMES: Theme[] = [
             { emoji: '🌙', name: 'Moon' },
             { emoji: '💫', name: 'Dizzy Star' },
             { emoji: '🧬', name: 'DNA Spiral' }
-        ]
+        ],
+        confettiColors: ['#6366f1', '#8b5cf6', '#c4b5fd', '#d8b4fe', '#f3e8ff']
     },
     {
         name: 'Minty Fresh',
@@ -89,6 +91,7 @@ export const THEMES: Theme[] = [
             { emoji: '👽', name: 'Broccoli' },
             { emoji: '🌲', name: 'Pine Tree' },
             { emoji: '🦎', name: 'Lizard' }
-        ]
+        ],
+        confettiColors: ['#b3f5dd', '#d1fae5', '#a7f3d0', '#99f6e4', '#6ee7b7']
     }
 ];
