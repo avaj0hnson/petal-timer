@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ModuleWithProviders, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, ModuleWithProviders, OnDestroy, OnInit } from '@angular/core';
 import { CircleProgressOptions, NgCircleProgressModule } from 'ng-circle-progress';
 import { TimelineComponent } from "../timeline/timeline.component";
 import { BadgePlaygroundComponent } from "../badge-playground/badge-playground.component";
@@ -7,7 +7,7 @@ import { PomodoroTimerService } from '../services/pomodoro-timer.service';
 import { SoundService } from '../services/sound.service';
 import { BadgeService } from '../services/badge.service';
 import { ConfettiService } from '../services/confetti.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { SettingsModalComponent } from "../settings-modal/settings-modal.component";
 import { SettingsService } from '../services/settings.service';
 import { ThemeService } from '../services/theme.service';
@@ -25,6 +25,7 @@ import { Theme } from '../models/theme.model';
 })
 export class PomodoroComponent implements OnInit, OnDestroy{
   isRunning = false;
+  showInfoModal = false;
   sessionType: 'work' | 'break' = 'work';
   completedSessions = 0;
   longBreakInterval = 4;
@@ -32,6 +33,7 @@ export class PomodoroComponent implements OnInit, OnDestroy{
   theme$!: Observable<Theme>;
   themeReady$!: Observable<boolean>;
   timeLeft$!: Observable<number>;
+  private destroy$ = new Subject<void>();
 
   readonly sessionDurations = {
     work: 25 * 60,
@@ -50,51 +52,71 @@ export class PomodoroComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.themeReady$ = this.themeService.themeReady$;
     this.theme$ = this.themeService.currentTheme$;
-    this.theme$.subscribe(theme => {
+
+    this.theme$.pipe(takeUntil(this.destroy$)).subscribe(theme => {
       this.badgeService.setBadgeSet(theme.badgeSet);
       this.activeBadges = this.badgeService.activeBadges;
     });
+
     this.timeLeft$ = this.timerService.timeLeft$;
-    this.activeBadges = this.badgeService.activeBadges;
-  
     this.timerService.setInitialTime(this.sessionDurations.work);
 
-    this.timerService.timeLeftCompleted$.subscribe(() => {
-      this.completeSession();
-    });
+    this.timerService.timeLeftCompleted$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.completeSession());
 
-    this.settingsService.workDuration$.subscribe(min => {
-      this.sessionDurations.work = min * 60;
-      if (this.sessionType === 'work' && !this.isRunning) {
-        this.timerService.setInitialTime(this.sessionDurations.work);
-      }
-      if (this.sessionType === 'work' && this.isRunning) {
-        this.timerService.start(this.sessionDurations.work);
-      }
-    });
+    this.handleSettingsSubscriptions();
+  }
 
-    this.settingsService.shortBreakDuration$.subscribe(min => {
-      this.sessionDurations.shortBreak = min * 60;
-      if (this.sessionType === 'break' && this.completedSessions % this.longBreakInterval !== 0 && !this.isRunning) {
-        this.timerService.setInitialTime(this.sessionDurations.shortBreak);
-      }
-      if (this.sessionType === 'break' && this.completedSessions % this.longBreakInterval !== 0 && this.isRunning) {
-        this.timerService.start(this.sessionDurations.shortBreak);
-      }
-    });
+  private handleSettingsSubscriptions(): void {
+    // Work duration updates
+    this.settingsService.workDuration$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(min => {
+        this.sessionDurations.work = min * 60;
+        if (this.sessionType === 'work') {
+          if (!this.isRunning) {
+            this.timerService.setInitialTime(this.sessionDurations.work);
+          } else {
+            this.timerService.start(this.sessionDurations.work);
+          }
+        }
+      });
 
-    this.settingsService.longBreakDuration$.subscribe(min => {
-      this.sessionDurations.longBreak = min * 60;
-      if (this.sessionType === 'break' && this.completedSessions % this.longBreakInterval === 0 && !this.isRunning) {
-        this.timerService.setInitialTime(this.sessionDurations.longBreak);
-      }
-      if (this.sessionType === 'break' && this.completedSessions % this.longBreakInterval === 0 && this.isRunning) {
-        this.timerService.start(this.sessionDurations.longBreak);
-      }
-    });
-  }  
+    // Short break updates
+    this.settingsService.shortBreakDuration$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(min => {
+        this.sessionDurations.shortBreak = min * 60;
+        const isShortBreak = this.sessionType === 'break' && this.completedSessions % this.longBreakInterval !== 0;
+        if (isShortBreak) {
+          if (!this.isRunning) {
+            this.timerService.setInitialTime(this.sessionDurations.shortBreak);
+          } else {
+            this.timerService.start(this.sessionDurations.shortBreak);
+          }
+        }
+      });
+
+    // Long break updates
+    this.settingsService.longBreakDuration$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(min => {
+        this.sessionDurations.longBreak = min * 60;
+        const isLongBreak = this.sessionType === 'break' && this.completedSessions % this.longBreakInterval === 0;
+        if (isLongBreak) {
+          if (!this.isRunning) {
+            this.timerService.setInitialTime(this.sessionDurations.longBreak);
+          } else {
+            this.timerService.start(this.sessionDurations.longBreak);
+          }
+        }
+      });
+  }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.timerService.stop();
   }
 
@@ -159,4 +181,12 @@ export class PomodoroComponent implements OnInit, OnDestroy{
     this.badgeService.setBadgeSet(this.badgeService.getCurrentBadgeSet());
     this.activeBadges = this.badgeService.activeBadges;
   }  
+
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscapeKey(event: KeyboardEvent): void {
+    if (this.showInfoModal) {
+      this.showInfoModal = false;
+      event.preventDefault();
+    }
+  }
 }

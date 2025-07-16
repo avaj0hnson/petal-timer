@@ -4,8 +4,22 @@
             class="flex flex-col items-center justify-start min-h-screen w-full transition-colors duration-500 p-8"
             [ngClass]="theme.backgroundClass"
         >
-            <!-- Settings Button -->
-            <div class="absolute top-6 right-6">
+            <div class="absolute top-6 right-6 flex items-center gap-2">
+                <!-- Info Button -->
+                <button
+                    aria-label="Info"
+                    (click)="showInfoModal = true"
+                    title="Info"
+                    [ngClass]="[
+                        'transition text-3xl p-2 rounded-full hover:bg-opacity-10',
+                        theme.textClass,
+                        theme.focusRingClass
+                    ]"
+                >
+                    <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+                </button>
+
+                <!-- Settings Button -->
                 <button
                     aria-label="Open settings"
                     (click)="settingsService.openSettings()"
@@ -19,7 +33,6 @@
                     <i class="fa-solid fa-gear" aria-hidden="true"></i>
                 </button>
             </div>
-
             <!-- Timer + Status -->
             <div class="flex flex-col md:flex-row items-center justify-center gap-12 w-full max-w-6xl">
                 <div class="flex flex-col items-center gap-6">
@@ -47,7 +60,7 @@
                                 [renderOnClick]="false"
                                 [clockwise]="false"
                             ></circle-progress>
-                                <div [ngClass]="[theme.textClass, 'absolute text-4xl font-cute font-bold']">
+                                <div  aria-live="polite" aria-label="Time left" role="timer" [ngClass]="[theme.textClass, 'absolute text-4xl font-cute font-bold']">
                                     {{ formatTime(timeLeft) }}
                                 </div>
                         </ng-container>
@@ -59,7 +72,7 @@
                         <button
                             (click)="toggleTimer()"
                             [attr.aria-label]="isRunning ? 'Pause timer' : 'Start timer'"
-                            title="toggleTimer"
+                            title="Toggle Timer"
                             [ngClass]="[
                                 'px-8 py-3 rounded-full text-white font-cute text-lg tracking-wide shadow-lg hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 flex items-center gap-2',
                                 theme.buttonClass,
@@ -115,35 +128,85 @@
                                 [endHour]="endHour"
                                 [textClass]="theme.textClass"
                                 [progressColorClass]="theme.progressFillClass"
-                                [backgroundClass]="theme.progressTrackClass "
+                                [backgroundClass]="theme.progressTrackClass"
                             ></app-timeline>
                         </div>
                     </div>
                 </ng-container>
             </ng-container>
-        </div>
 
-        <!-- Settings Modal -->
-        <ng-container *ngIf="settingsService.showSettings$ | async">
-            <ng-container *ngIf="(settingsService.startHour$ | async) as startHourForModal">
-                <ng-container *ngIf="(settingsService.endHour$ | async) as endHourForModal">
-                    <app-settings-modal
-                        [startHour]="startHourForModal"
-                        [endHour]="endHourForModal"
-                        [muted]="(settingsService.muted$ | async)!"
-                        [workDuration]="(settingsService.workDuration$ | async)!"
-                        [shortBreakDuration]="(settingsService.shortBreakDuration$ | async)!"
-                        [longBreakDuration]="(settingsService.longBreakDuration$ | async)!"
-                        (workDurationChange)="settingsService.setWorkDuration($event)"
-                        (shortBreakDurationChange)="settingsService.setShortBreakDuration($event)"
-                        (longBreakDurationChange)="settingsService.setLongBreakDuration($event)"
-                        (startHourChange)="settingsService.setStartHour($event)"
-                        (endHourChange)="settingsService.setEndHour($event)"
-                        (mutedChange)="settingsService.setMuted($event)"
-                        (close)="settingsService.closeSettings()"
-                    ></app-settings-modal>
+            <!-- Settings Modal -->
+            <ng-container *ngIf="settingsService.showSettings$ | async">
+                <ng-container *ngIf="(settingsService.startHour$ | async) as startHourForModal">
+                    <ng-container *ngIf="(settingsService.endHour$ | async) as endHourForModal">
+                        <app-settings-modal
+                            [startHour]="startHourForModal"
+                            [endHour]="endHourForModal"
+                            [muted]="(settingsService.muted$ | async)!"
+                            [workDuration]="(settingsService.workDuration$ | async)!"
+                            [shortBreakDuration]="(settingsService.shortBreakDuration$ | async)!"
+                            [longBreakDuration]="(settingsService.longBreakDuration$ | async)!"
+                            (workDurationChange)="settingsService.setWorkDuration($event)"
+                            (shortBreakDurationChange)="settingsService.setShortBreakDuration($event)"
+                            (longBreakDurationChange)="settingsService.setLongBreakDuration($event)"
+                            (startHourChange)="settingsService.setStartHour($event)"
+                            (endHourChange)="settingsService.setEndHour($event)"
+                            (mutedChange)="settingsService.setMuted($event)"
+                            (close)="settingsService.closeSettings()"
+                        ></app-settings-modal>
+                    </ng-container>
                 </ng-container>
             </ng-container>
-        </ng-container>
+
+            <!-- Info Modal -->
+            <ng-container *ngIf="showInfoModal">
+                <div
+                    class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="info-heading"
+                    cdkTrapFocus
+                >
+                    <div
+                    class="max-w-lg w-full rounded-2xl p-6 shadow-xl relative outline-none"
+                    tabindex="-1"
+                    [ngClass]="theme.backgroundClass"
+                    >
+                        <!-- Close Button (X) -->
+                        <button
+                            (click)="showInfoModal = false"
+                            title="Close"
+                            aria-label="Close info"
+                            class="absolute top-4 right-4 text-2xl transition-colors"
+                            [ngClass]="theme.iconButtonClass"
+                        >
+                            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                        </button>
+
+                        <div [ngClass]="theme.textClass" class="space-y-4 font-cute text-center">
+                            <h2 id="info-heading" class="text-2xl font-bold">Privacy & Attribution</h2>
+                            <p class="text-base">
+                                Petal Timer does not collect personal data. Your settings (theme and custom hours) are stored in your browser only using localStorage.
+                            </p>
+                            <p class="text-base">
+                                Icons by <a href="https://fontawesome.com" rel="noopener" class="underline hover:text-blue-500" target="_blank">Font Awesome</a>. Font: <a href="https://fonts.google.com/specimen/Baloo+2" rel="noopener" class="underline hover:text-blue-500" target="_blank">Baloo 2</a>.
+                            </p>
+                            <p class="text-base">© 2025 Ava Johnson. All rights reserved.</p>
+
+                            <!-- Buy Me a Coffee -->
+                            <a
+                                href="https://coff.ee/avaj0hnson"
+                                target="_blank"
+                                rel="noopener"
+                                class="inline-block bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-2 px-4 rounded-full shadow-md transition"
+                            >
+                                ☕ Buy Me a Coffee
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+        </div>
     </ng-container>
 </ng-container>
