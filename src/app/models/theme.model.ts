@@ -13,4 +13,5 @@ export interface Theme {
     modalBackgroundClass: string;
     badgeSet: { emoji: string; name: string }[];
     confettiColors: string[];
+    selectBackgroundClass?: string;
 }

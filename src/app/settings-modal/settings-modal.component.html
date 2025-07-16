@@ -38,11 +38,11 @@
                 Theme
                 </label>
                 <select
-                id="themeSelect"
-                [(ngModel)]="selectedThemeName"
-                (ngModelChange)="onThemeChange($event)"
-                class="rounded-full px-3 py-2 shadow-inner border"
-                [ngClass]="[currentTheme.textClass, currentTheme.focusRingClass, 'border-opacity-50']"
+                    id="themeSelect"
+                    [(ngModel)]="selectedThemeName"
+                    (ngModelChange)="onThemeChange($event)"
+                    class="rounded-full px-3 py-2 shadow-inner border"
+                    [ngClass]="[currentTheme.textClass, currentTheme.selectBackgroundClass, currentTheme.focusRingClass, 'border-opacity-50']"
                 >
                 <option *ngFor="let theme of themes" [value]="theme.name">
                     {{ theme.name }}
@@ -120,7 +120,7 @@
                     [(ngModel)]="startHour"
                     (ngModelChange)="startHourChange.emit($event)"
                     class="rounded-full px-3 py-2 shadow-inner border"
-                    [ngClass]="[currentTheme.textClass, currentTheme.focusRingClass, 'border-opacity-50']"
+                    [ngClass]="[currentTheme.textClass, currentTheme.selectBackgroundClass, currentTheme.focusRingClass, 'border-opacity-50']"
                 >
                     <option *ngFor="let hour of validStartHours" [value]="hour">
                         {{ formatHour(hour) }}
@@ -138,7 +138,7 @@
                     [(ngModel)]="endHour"
                     (ngModelChange)="endHourChange.emit($event)"
                     class="rounded-full px-3 py-2 shadow-inner border"
-                    [ngClass]="[currentTheme.textClass, currentTheme.focusRingClass, 'border-opacity-50']"
+                    [ngClass]="[currentTheme.textClass, currentTheme.selectBackgroundClass, currentTheme.focusRingClass, 'border-opacity-50']"
                 >
                     <option *ngFor="let hour of validEndHours" [value]="hour">
                         {{ formatHour(hour) }}
