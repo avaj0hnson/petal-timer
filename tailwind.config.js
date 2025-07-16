@@ -62,7 +62,7 @@ module.exports = {
         softwhite: '#fdfdfd'
       },
       fontFamily: {
-        cute: ['"Baloo 2"', 'cursive'],
+        sans: ['"Baloo 2"', 'cursive', 'sans-serif']
       },
       boxShadow: {
         soft: '0 4px 12px rgba(248, 180, 217, 0.4)',
