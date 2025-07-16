@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://https://petaltimer.netlify.app/sitemap.xml

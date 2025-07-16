@@ -50,40 +50,19 @@
                 </select>
             </div>
 
-            <!-- Start Time -->
-            <div class="flex flex-col">
-                <label for="startHourSelect" class="text-sm mb-1" [ngClass]="[currentTheme.textClass]">
-                    Start Time
+            <!-- Mute Toggle -->
+            <div class="flex items-center gap-2">
+                <input
+                    type="checkbox"
+                    id="muteToggle"
+                    [(ngModel)]="muted"
+                    (ngModelChange)="mutedChange.emit($event)"
+                    class="form-checkbox h-5 w-5 rounded"
+                    [ngClass]="[currentTheme.textClass, currentTheme.focusRingClass]"
+                />
+                <label for="muteToggle" class="text-sm" [ngClass]="[currentTheme.textClass]">
+                    Mute Sounds
                 </label>
-                <select
-                    id="startHourSelect"
-                    [(ngModel)]="startHour"
-                    (ngModelChange)="startHourChange.emit($event)"
-                    class="rounded-full px-3 py-2 shadow-inner border"
-                    [ngClass]="[currentTheme.textClass, currentTheme.focusRingClass, 'border-opacity-50']"
-                >
-                    <option *ngFor="let hour of validStartHours" [value]="hour">
-                        {{ formatHour(hour) }}
-                    </option>
-                </select>
-            </div>
-
-            <!-- End Time -->
-            <div class="flex flex-col">
-                <label for="endHourSelect" class="text-sm mb-1" [ngClass]="[currentTheme.textClass]">
-                    End Time
-                </label>
-                <select
-                    id="endHourSelect"
-                    [(ngModel)]="endHour"
-                    (ngModelChange)="endHourChange.emit($event)"
-                    class="rounded-full px-3 py-2 shadow-inner border"
-                    [ngClass]="[currentTheme.textClass, currentTheme.focusRingClass, 'border-opacity-50']"
-                >
-                    <option *ngFor="let hour of validEndHours" [value]="hour">
-                        {{ formatHour(hour) }}
-                    </option>
-                </select>
             </div>
 
             <!-- Work Duration -->
@@ -131,19 +110,40 @@
             />
             </div>
 
-            <!-- Mute Toggle -->
-            <div class="flex items-center gap-2">
-                <input
-                    type="checkbox"
-                    id="muteToggle"
-                    [(ngModel)]="muted"
-                    (ngModelChange)="mutedChange.emit($event)"
-                    class="form-checkbox h-5 w-5 rounded"
-                    [ngClass]="[currentTheme.textClass, currentTheme.focusRingClass]"
-                />
-                <label for="muteToggle" class="text-sm" [ngClass]="[currentTheme.textClass]">
-                    Mute Sounds
+                        <!-- Start Time -->
+            <div class="flex flex-col">
+                <label for="startHourSelect" class="text-sm mb-1" [ngClass]="[currentTheme.textClass]">
+                    Start Time
                 </label>
+                <select
+                    id="startHourSelect"
+                    [(ngModel)]="startHour"
+                    (ngModelChange)="startHourChange.emit($event)"
+                    class="rounded-full px-3 py-2 shadow-inner border"
+                    [ngClass]="[currentTheme.textClass, currentTheme.focusRingClass, 'border-opacity-50']"
+                >
+                    <option *ngFor="let hour of validStartHours" [value]="hour">
+                        {{ formatHour(hour) }}
+                    </option>
+                </select>
+            </div>
+
+            <!-- End Time -->
+            <div class="flex flex-col">
+                <label for="endHourSelect" class="text-sm mb-1" [ngClass]="[currentTheme.textClass]">
+                    End Time
+                </label>
+                <select
+                    id="endHourSelect"
+                    [(ngModel)]="endHour"
+                    (ngModelChange)="endHourChange.emit($event)"
+                    class="rounded-full px-3 py-2 shadow-inner border"
+                    [ngClass]="[currentTheme.textClass, currentTheme.focusRingClass, 'border-opacity-50']"
+                >
+                    <option *ngFor="let hour of validEndHours" [value]="hour">
+                        {{ formatHour(hour) }}
+                    </option>
+                </select>
             </div>
         </div>
     </div>
