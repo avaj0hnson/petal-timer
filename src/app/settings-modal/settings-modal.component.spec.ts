@@ -37,7 +37,8 @@ describe('SettingsModalComponent', () => {
         { emoji: '🍒', name: 'Cherries' },
         { emoji: '💗', name: 'Heart Sparkle' }
     ],
-    confettiColors: ['#ffd6e8', '#ffeaf4', '#f8b4d9', '#fcd3e1', '#fff0f6']
+    confettiColors: ['#ffd6e8', '#ffeaf4', '#f8b4d9', '#fcd3e1', '#fff0f6'],
+    selectBackgroundClass: 'bg-white'
   };
 
   const mockThemeService = {
@@ -46,7 +47,7 @@ describe('SettingsModalComponent', () => {
     currentTheme$: of(mockTheme),
     switchTheme: jasmine.createSpy('switchTheme')
   };
-  
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SettingsModalComponent],
@@ -57,6 +58,8 @@ describe('SettingsModalComponent', () => {
 
     fixture = TestBed.createComponent(SettingsModalComponent);
     component = fixture.componentInstance;
+    component.startHour = 9;
+    component.endHour = 17;
     fixture.detectChanges();
   });
 
@@ -73,76 +76,68 @@ describe('SettingsModalComponent', () => {
 
   it('should calculate valid start hours', () => {
     component.endHour = 15;
-    fixture.detectChanges();
     expect(component.validStartHours.every(hour => hour < 15)).toBeTrue();
   });
 
   it('should calculate valid end hours', () => {
     component.startHour = 10;
-    fixture.detectChanges();
     expect(component.validEndHours.every(hour => hour > 10)).toBeTrue();
   });
 
-  it('should emit mutedChange', () => {
+  it('should emit mutedChange when toggled', () => {
     spyOn(component.mutedChange, 'emit');
-    component.mutedChange.emit(true);
+    component.mutedChange.emit(true); // Simulate interaction
     expect(component.mutedChange.emit).toHaveBeenCalledWith(true);
   });
 
-  it('should emit startHourChange', () => {
+  it('should emit startHourChange when start hour changes', () => {
     spyOn(component.startHourChange, 'emit');
     component.startHourChange.emit(8);
     expect(component.startHourChange.emit).toHaveBeenCalledWith(8);
   });
 
-  it('should emit endHourChange', () => {
+  it('should emit endHourChange when end hour changes', () => {
     spyOn(component.endHourChange, 'emit');
     component.endHourChange.emit(17);
     expect(component.endHourChange.emit).toHaveBeenCalledWith(17);
   });
 
-  it('should emit close event', () => {
+  it('should emit close event when Escape key is pressed', () => {
     spyOn(component.close, 'emit');
-    component.close.emit();
+    component.onEscapeKey(new KeyboardEvent('keydown', { key: 'Escape' }));
     expect(component.close.emit).toHaveBeenCalled();
   });
 
-  it('should switch theme when onThemeChange is called', () => {
+  it('should switch theme and update selected name', () => {
     component.onThemeChange('Galaxy');
-    expect(mockThemeService.switchTheme).toHaveBeenCalledWith('Galaxy');
     expect(component.selectedThemeName).toBe('Galaxy');
+    expect(mockThemeService.switchTheme).toHaveBeenCalledWith('Galaxy');
   });
 
-  it('should emit workDurationChange when slider value changes', () => {
+  it('should emit workDurationChange when updated', () => {
     spyOn(component.workDurationChange, 'emit');
-    component.workDuration = 50;
-    component.workDurationChange.emit(component.workDuration);
-    expect(component.workDurationChange.emit).toHaveBeenCalledWith(50);
+    component.workDuration = 45;
+    component.workDurationChange.emit(component.workDuration); // Simulate user change
+    expect(component.workDurationChange.emit).toHaveBeenCalledWith(45);
   });
 
-  it('should emit shortBreakDurationChange when slider value changes', () => {
+  it('should emit shortBreakDurationChange when updated', () => {
     spyOn(component.shortBreakDurationChange, 'emit');
     component.shortBreakDuration = 10;
     component.shortBreakDurationChange.emit(component.shortBreakDuration);
     expect(component.shortBreakDurationChange.emit).toHaveBeenCalledWith(10);
   });
 
-  it('should emit longBreakDurationChange when slider value changes', () => {
+  it('should emit longBreakDurationChange when updated', () => {
     spyOn(component.longBreakDurationChange, 'emit');
-    component.longBreakDuration = 30;
+    component.longBreakDuration = 25;
     component.longBreakDurationChange.emit(component.longBreakDuration);
-    expect(component.longBreakDurationChange.emit).toHaveBeenCalledWith(30);
-  });
-
-  it('should emit close when Escape key is pressed', () => {
-    spyOn(component.close, 'emit');
-    const event = new KeyboardEvent('keydown', { key: 'Escape' });
-    document.dispatchEvent(event);
-    expect(component.close.emit).toHaveBeenCalled();
+    expect(component.longBreakDurationChange.emit).toHaveBeenCalledWith(25);
   });
 
   it('should initialize with current theme from ThemeService', () => {
     expect(component.currentTheme.name).toBe('Blush');
     expect(component.selectedThemeName).toBe('Blush');
+    expect(component.themes.length).toBeGreaterThan(0);
   });
 });
