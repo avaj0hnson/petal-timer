@@ -45,8 +45,11 @@ export class ThemeService {
 
   private getInitialTheme(): Theme {
     const stored = localStorage.getItem(STORAGE_KEY);
-
     const found = this.themes.find(t => t.name === stored);
+
+    if (!found && stored) {
+      console.warn(`[ThemeService] Theme "${stored}" not found. Falling back to default.`);
+    }
 
     return found ?? this.themes[0];
   }

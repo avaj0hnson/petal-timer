@@ -161,7 +161,7 @@ export const THEMES: Theme[] = [
         confettiColors: ['#1f2937', '#4b5563', '#6b7280', '#9ca3af', '#d1d5db'],
         selectBackgroundClass: 'bg-gray-800'
     },
-     {
+    {
         name: 'Galaxy',
         rootClass: 'theme-galaxy',
         backgroundClass: 'bg-indigo-950',
