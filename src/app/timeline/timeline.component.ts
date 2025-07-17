@@ -16,6 +16,7 @@ export class TimelineComponent implements OnInit, OnChanges {
   @Input() textClass = '';
   @Input() progressColorClass = '';
   @Input() backgroundClass = '';
+  @Input() modalBackgroundClass: string = '';
 
   timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
   hours: number[] = Array.from({ length: 24 }, (_, i) => i);

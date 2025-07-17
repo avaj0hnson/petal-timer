@@ -17,8 +17,9 @@
             <span aria-hidden="true">{{ badge.emoji }}</span>
         </div>
     </div>
+</div>
 
-    <!-- Completion Message + Restart Button -->
+<!-- Completion Message + Restart Button -->
     <div *ngIf="allBadgesUnlocked" class="flex flex-col items-center justify-center mt-4 gap-2">
         <div [ngClass]="[textClass, 'text-xl font-cute font-bold']">
             All badges unlocked! 🎉
@@ -34,5 +35,4 @@
         >
             <i class="fa-solid fa-rotate-right"></i>
         </button>
-    </div>
 </div>

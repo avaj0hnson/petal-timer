@@ -41,7 +41,7 @@
                             *ngIf="isRunning"
                             [ngClass]="['absolute w-full h-full rounded-full opacity-30 blur-2xl animate-pulse', theme.textClass]"
                         ></div>
-                        <div [ngClass]="[theme.modalBackgroundClass, 'relative w-[280px] h-[280px] rounded-full shadow-xl flex items-center justify-center']">
+                        <div [ngClass]="[theme.modalBackgroundClass]" class="relative w-[280px] h-[280px] rounded-full shadow-xl flex items-center justify-center">
                         <ng-container *ngIf="timeLeft$ | async as timeLeft">
                             <circle-progress
                                 [percent]="getProgressPercent(timeLeft)"
@@ -122,15 +122,14 @@
             <ng-container *ngIf="(settingsService.startHour$ | async) as startHour">
                 <ng-container *ngIf="(settingsService.endHour$ | async) as endHour">
                     <div class="w-full max-w-5xl mt-12">
-                        <div [ngClass]="[theme.modalBackgroundClass, 'rounded-3xl shadow-lg p-8']">
-                            <app-timeline 
-                                [startHour]="startHour" 
-                                [endHour]="endHour"
-                                [textClass]="theme.textClass"
-                                [progressColorClass]="theme.progressFillClass"
-                                [backgroundClass]="theme.progressTrackClass"
-                            ></app-timeline>
-                        </div>
+                        <app-timeline
+                            [startHour]="startHour" 
+                            [endHour]="endHour"
+                            [textClass]="theme.textClass"
+                            [progressColorClass]="theme.progressFillClass"
+                            [backgroundClass]="theme.progressTrackClass"
+                            [modalBackgroundClass]="theme.modalBackgroundClass"
+                        ></app-timeline>
                     </div>
                 </ng-container>
             </ng-container>

@@ -1,31 +1,33 @@
-<div class="w-full py-2 flex flex-col gap-6">
-    <div
-        class="relative w-full flex items-center justify-between text-sm font-semibold px-2 mb-2"
-        [ngClass]="textClass"
-        aria-hidden="true"
-    >
-        <span>{{ formatHour(startHour) }}</span>
-        <span>{{ formatHour(endHour) }}</span>
-    </div>
-
-    <div
-        class="relative w-full h-8 rounded-full overflow-hidden shadow-inner"
-        role="progressbar"
-        [attr.aria-valuenow]="currentProgress"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-label="Daily timeline progress"
-        [ngClass]="backgroundClass"
-    >
+<div [ngClass]="[modalBackgroundClass]" class="w-full rounded-3xl shadow-lg p-8 flex flex-col gap-6">
+    <div class="w-full py-2 flex flex-col gap-6">
         <div
-            class="absolute top-0 left-0 h-full transition-all duration-700 ease-in-out"
-            [ngClass]="progressColorClass"
-            [style.width.%]="currentProgress"
-        ></div>
-        <div class="absolute inset-0 flex items-center justify-center">
-            <span class="font-cute text-base tracking-wider" [ngClass]="textClass">
-                {{ currentProgress | number: '1.0-0' }}%
-            </span>
+            class="relative w-full flex items-center justify-between text-sm font-semibold px-2 mb-2"
+            [ngClass]="textClass"
+            aria-hidden="true"
+        >
+            <span>{{ formatHour(startHour) }}</span>
+            <span>{{ formatHour(endHour) }}</span>
+        </div>
+
+        <div
+            class="relative w-full h-8 rounded-full overflow-hidden shadow-inner"
+            role="progressbar"
+            [attr.aria-valuenow]="currentProgress"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-label="Daily timeline progress"
+            [ngClass]="backgroundClass"
+        >
+            <div
+                class="absolute top-0 left-0 h-full transition-all duration-700 ease-in-out"
+                [ngClass]="progressColorClass"
+                [style.width.%]="currentProgress"
+            ></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <span class="font-cute text-base tracking-wider" [ngClass]="textClass">
+                    {{ currentProgress | number: '1.0-0' }}%
+                </span>
+            </div>
         </div>
     </div>
 </div>

@@ -109,7 +109,7 @@ export const THEMES: Theme[] = [
         progressColor: '#22d3ee',
         progressTrackClass: 'bg-cyan-900',
         progressFillClass: 'bg-cyan-600',
-        modalBackgroundClass: 'bg-white',
+        modalBackgroundClass: 'bg-gray-800',
         badgeSet: [
             { emoji: '🌊', name: 'Wave' },
             { emoji: '🐬', name: 'Dolphin' },
@@ -159,7 +159,7 @@ export const THEMES: Theme[] = [
             { emoji: '🖇️', name: 'Paperclip' }
         ],
         confettiColors: ['#1f2937', '#4b5563', '#6b7280', '#9ca3af', '#d1d5db'],
-        selectBackgroundClass: 'bg-gray-800'
+        selectBackgroundClass: 'bg-gray-900'
     },
     {
         name: 'Galaxy',
@@ -173,7 +173,7 @@ export const THEMES: Theme[] = [
         progressColor: '#6366f1',
         progressTrackClass: 'bg-indigo-900',
         progressFillClass: 'bg-indigo-400',
-        modalBackgroundClass: 'bg-gray-100',
+        modalBackgroundClass: 'bg-gray-900',
         badgeSet: [
             { emoji: '🌌', name: 'Milky Way' },
             { emoji: '🪐', name: 'Saturn' },
@@ -191,6 +191,6 @@ export const THEMES: Theme[] = [
             { emoji: '🧬', name: 'DNA Spiral' }
         ],
         confettiColors: ['#6366f1', '#8b5cf6', '#c4b5fd', '#d8b4fe', '#f3e8ff'],
-        selectBackgroundClass: 'bg-gray-800',
+        selectBackgroundClass: 'bg-gray-900',
     }
 ];
