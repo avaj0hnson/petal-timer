@@ -72,3 +72,5 @@ Each component includes unit tests using Angular’s built-in test utilities and
 To run tests:
 ```bash
 ng test
+
+[![codecov](https://codecov.io/gh/avaj0hnson/petal-timer/branch/main/graph/badge.svg)](https://codecov.io/gh/avaj0hnson/petal-timer)
