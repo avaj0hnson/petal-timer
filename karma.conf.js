@@ -32,8 +32,14 @@ module.exports = function (config) {
         { type: 'lcov' } // ✅ this is the key line for Codecov
       ]
     },
+    customLaunchers: {
+      ChromeHeadlessCI: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-gpu']
+      }
+    },
     reporters: ['progress', 'kjhtml'],
-    browsers: ['Chrome'],
+    browsers: ['ChromeHeadless'],
     restartOnFileChange: true
   });
 };
