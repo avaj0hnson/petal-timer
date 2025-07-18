@@ -1,19 +1,22 @@
 # 🌸 Petal Timer
+[![codecov](https://codecov.io/gh/avaj0hnson/petal-timer/branch/main/graph/badge.svg)](https://codecov.io/gh/avaj0hnson/petal-timer)
 
 A cute and modern Pomodoro timer built for realistic 8–5 workdays — complete with customizable sessions, motivating badges, themeable visuals, and real-time progress tracking. Stay focused, structured, and stylish.
+
+<img src="public/preview.png" alt="Petal Timer Preview" style="border-radius: 1rem; max-width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
 
 ---
 
 ## ✨ Features
 
 - ⏱ **Workday-Based Pomodoro Flow**: Aligns with a standard 8–5 schedule.
-- 🛠 **Customizable Sessions**: Set your own preferred hours.
-- 📊 **Live Progress Tracker**: View your progress through the day at a glance.
-- 🌸 **Badges & Confetti**: Earn adorable rewards for every session you complete.
-- 🔔 **Sound Alerts**: Distinct alerts for work and break transitions.
-- 🎨 **Theme Support**: Choose from Blush, Galaxy, and Minty Fresh themes.
-- 🌐 **Offline-Ready** – Saves your preferences using local storage.
-- 📱 **Fully Responsive** – Optimized for desktop and mobile.
+- 🛠 **Customizable Sessions**: Set your own preferred hours and breaks.
+- 📊 **Live Progress Tracker**: See your daily productivity unfold.
+- 🌸 **Badges & Confetti**: Earn adorable rewards for every session.
+- 🔔 **Sound Alerts**: Gentle reminders to switch between focus and rest.
+- 🎨 **Theme Support**: Choose from Blush, Galaxy, Minty Fresh, and more.
+- 🌐 **Offline-Ready** – Saves your preferences with local storage.
+- 📱 **Responsive Design** – Works seamlessly on mobile and desktop.
 
 ---
 
@@ -22,7 +25,6 @@ A cute and modern Pomodoro timer built for realistic 8–5 workdays — complete
 - [Angular](https://angular.io/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [RxJS](https://rxjs.dev/) & Component Store
-- [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) for user persistence
 - [canvas-confetti](https://www.npmjs.com/package/canvas-confetti)
 
 ---
@@ -44,33 +46,44 @@ A cute and modern Pomodoro timer built for realistic 8–5 workdays — complete
 
 ## 📁 Project Structure
 ```text
-src/
-├── app/
-│ ├── badge-playground/ # Badges rewarded for completed sessions
-│ ├── pomodoro/ # Core Pomodoro timer logic and components
-│ ├── settings-modal/ # Settings and customization UI
-│ ├── timeline/ # Session history and visual progress timeline
-│ ├── services/ # Sound, theme, conftetti, and timer logic
-│ ├── models/ # Type definitions for themes and settings
-│ ├── constants/ # Theme configurations and badge sets
-│ ├── app.component.* # Root component files
-│ ├── app.config.ts # App-level configuration
-│ ├── app.config.server.ts # Server-side config
-├── assets/ # Static assets
-├── index.html # Main HTML entry point
-├── main.ts # Client bootstrap
-├── main.server.ts # Server-side bootstrap
-├── styles.scss # Global styles
+petal-timer/
+├── .github/               # GitHub Actions workflow for tests and coverage
+├── public/                # Static assets (favicon, preview image, robots.txt)
+│   ├── sounds/            # Timer sounds
+│   └── preview.png        # UI screenshot for README
+├── src/                   # Application source code
+│   ├── app/               # Core app components and features
+│   │   ├── badge-playground/  # Badge unlock and reward system
+│   │   ├── constants/         # Theme colors, badge sets, and defaults
+│   │   ├── models/            # TypeScript interfaces and enums
+│   │   ├── pomodoro/          # Main Pomodoro logic and timer UI
+│   │   ├── services/          # Sound, confetti, theme, and timer logic
+│   │   ├── settings-modal/    # Session customization modal
+│   │   └── timeline/          # Daily timeline and progress tracker
+│   ├── app.component.*        # Root component files
+│   ├── app.config.ts          # Application configuration
+│   ├── app.config.server.ts   # Server-side config (for SSR)
+│   ├── index.html             # App entry HTML
+│   ├── main.ts                # App bootstrap (client)
+│   ├── main.server.ts         # App bootstrap (server)
+│   └── styles.scss            # Global styles
+├── server.ts              # Server-side rendering entry point
+├── karma.conf.js          # Karma test runner config
+├── angular.json           # Angular CLI configuration
+├── tailwind.config.js     # TailwindCSS theme setup
+├── tsconfig*.json         # TypeScript configs
+├── package.json           # Project metadata and scripts
+└── README.md              # This file 🌸
 ```
 
 ---
 
 ## 🧪 Testing
 
-Each component includes unit tests using Angular’s built-in test utilities and `HttpClientTestingModule`.
+This project includes unit tests for all major components.
 
-To run tests:
 ```bash
-ng test
+ng test --code-coverage
 ```
-[![codecov](https://codecov.io/gh/avaj0hnson/petal-timer/branch/main/graph/badge.svg)](https://codecov.io/gh/avaj0hnson/petal-timer)
+
+View full coverage on [Codecov](https://app.codecov.io/gh/avaj0hnson/petal-timer)
