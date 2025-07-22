@@ -220,4 +220,34 @@ describe('PomodoroComponent', () => {
       { emoji: '🌟', name: 'Star', x: 10 }
     ]);
   });
+
+  it('should close info modal on Escape key', () => {
+    component.showInfoModal = true;
+
+    const event = new KeyboardEvent('keydown', { key: 'Escape' });
+    component.handleEscapeKey(event);
+
+    expect(component.showInfoModal).toBeFalse();
+  });
+
+  it('should close skip confirm modal on Escape key', () => {
+    component.showSkipConfirmModal = true;
+
+    const event = new KeyboardEvent('keydown', { key: 'Escape' });
+    component.handleEscapeKey(event);
+
+    expect(component.showSkipConfirmModal).toBeFalse();
+  });
+
+  it('should do nothing on Escape if no modals are open', () => {
+    component.showInfoModal = false;
+    component.showSkipConfirmModal = false;
+
+    const event = new KeyboardEvent('keydown', { key: 'Escape' });
+    spyOn(event, 'preventDefault');
+
+    component.handleEscapeKey(event);
+
+    expect(event.preventDefault).not.toHaveBeenCalled();
+  });
 });

@@ -202,8 +202,19 @@ export class PomodoroComponent implements OnInit, OnDestroy{
 
   @HostListener('document:keydown.escape', ['$event'])
   handleEscapeKey(event: KeyboardEvent): void {
+    let modalClosed = false;
+
     if (this.showInfoModal) {
       this.showInfoModal = false;
+      modalClosed = true;
+    }
+
+    if (this.showSkipConfirmModal) {
+      this.showSkipConfirmModal = false;
+      modalClosed = true;
+    }
+
+    if (modalClosed) {
       event.preventDefault();
     }
   }
