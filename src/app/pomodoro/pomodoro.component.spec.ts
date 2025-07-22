@@ -170,11 +170,38 @@ describe('PomodoroComponent', () => {
     expect(calledSet.some(b => b.name === 'Cherry Blossom')).toBeTrue();    
   });
   
-  it('should skip session correctly', () => {
-    spyOn<any>(component, 'completeSession');
+  it('should open skip modal on work session skip', () => {
+    component.sessionType = 'work';
     component.skipSession();
+    expect(component.showSkipConfirmModal).toBeTrue();
+    expect(mockTimerService.pause).toHaveBeenCalled();
+  });
+
+  it('should skip break session immediately', () => {
+    spyOn<any>(component, 'completeSession');
+    component.sessionType = 'break';
+
+    component.skipSession();
+
     expect(mockTimerService.stop).toHaveBeenCalled();
     expect(component['completeSession']).toHaveBeenCalled();
+  });
+
+  it('should confirm skip and not award badge', () => {
+    spyOn<any>(component, 'completeSession');
+    component.confirmSkipSession();
+
+    expect(component.showSkipConfirmModal).toBeFalse();
+    expect(mockTimerService.stop).toHaveBeenCalled();
+    expect(component['completeSession']).toHaveBeenCalledWith(true);
+  });
+
+  it('should not trigger long break if no sessions completed', () => {
+    component.sessionType = 'work';
+    component.completedSessions = 0;
+
+    timeLeftCompletedSubject.next();
+    expect(mockTimerService.start).toHaveBeenCalledWith(component.sessionDurations.shortBreak);
   });
 
   it('should restart badges', () => {
