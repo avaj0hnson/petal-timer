@@ -15,7 +15,6 @@ export class PomodoroTimerService {
   private remainingTime: number = 0;
   private isRunning: boolean = false;
 
-  /** Initializes the timer without starting it */
   setInitialTime(duration: number) {
     this.stop();
     this.duration = duration;
@@ -23,17 +22,15 @@ export class PomodoroTimerService {
     this._timeLeft.next(duration);
   }
 
-  /** Starts a new session from scratch */
   start(duration: number) {
     this.stop();
     this.duration = duration;
     this.remainingTime = duration;
-    this.startTimestamp = Date.now();
     this._timeLeft.next(duration);
+    this.startTimestamp = Date.now();
     this.startTicking();
   }
 
-  /** Resumes a paused timer */
   resume() {
     if (!this.isRunning && this.remainingTime > 0) {
       this.startTimestamp = Date.now() - (this.duration - this.remainingTime) * 1000;
@@ -41,7 +38,6 @@ export class PomodoroTimerService {
     }
   }
 
-  /** Pauses the timer */
   pause() {
     if (!this.isRunning) return;
 
@@ -50,10 +46,10 @@ export class PomodoroTimerService {
     this._timeLeft.next(this.remainingTime);
   }
 
-  /** Stops the timer completely */
   stop() {
     this.stopTicking();
     this.startTimestamp = null;
+    this.remainingTime = 0;
     this.isRunning = false;
   }
 

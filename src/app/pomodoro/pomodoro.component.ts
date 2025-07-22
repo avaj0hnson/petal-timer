@@ -26,6 +26,7 @@ import { Theme } from '../models/theme.model';
 export class PomodoroComponent implements OnInit, OnDestroy{
   isRunning = false;
   showInfoModal = false;
+  showSkipConfirmModal = false;
   sessionType: 'work' | 'break' = 'work';
   completedSessions = 0;
   longBreakInterval = 4;
@@ -103,7 +104,9 @@ export class PomodoroComponent implements OnInit, OnDestroy{
       .pipe(takeUntil(this.destroy$))
       .subscribe(min => {
         this.sessionDurations.longBreak = min * 60;
-        const isLongBreak = this.sessionType === 'break' && this.completedSessions % this.longBreakInterval === 0;
+        const isLongBreak = this.sessionType === 'break' &&
+                            this.completedSessions !== 0 &&
+                            this.completedSessions % this.longBreakInterval === 0;
         if (isLongBreak) {
           if (!this.isRunning) {
             this.timerService.setInitialTime(this.sessionDurations.longBreak);
@@ -130,28 +133,41 @@ export class PomodoroComponent implements OnInit, OnDestroy{
   }
 
   skipSession(): void {
-    this.timerService.stop();
-    this.completeSession();
+    if (this.sessionType === 'work') {
+      this.timerService.pause();
+      this.showSkipConfirmModal = true;
+    } else {
+      this.timerService.stop();
+      this.completeSession();
+    }
   }
-  
-  private completeSession(): void {
+
+  confirmSkipSession(): void {
+    this.showSkipConfirmModal = false;
+    this.timerService.stop();
+    this.completeSession(true);
+  }
+
+  private completeSession(wasSkipped = false): void {
     this.isRunning = false;
-  
+
     if (this.sessionType === 'work') {
       this.soundService.playWorkEnd();
-      this.completedSessions++;
-      this.badgeService.unlockNextBadge();
-      
-      const isLongBreak = this.completedSessions % this.longBreakInterval === 0;
+      if (!wasSkipped) {
+        this.completedSessions++;
+        this.badgeService.unlockNextBadge();
+        this.confettiService.launchConfetti();
+      }
+
       this.sessionType = 'break';
-  
+
+      const isLongBreak = this.completedSessions !== 0 && this.completedSessions % this.longBreakInterval === 0;
       const nextDuration = isLongBreak
         ? this.sessionDurations.longBreak
         : this.sessionDurations.shortBreak;
-      
+
       this.timerService.start(nextDuration);
       this.isRunning = true;
-      this.confettiService.launchConfetti();
     } else {
       this.soundService.playBreakEnd();
       this.sessionType = 'work';
@@ -159,7 +175,7 @@ export class PomodoroComponent implements OnInit, OnDestroy{
       this.isRunning = true;
     }
   }
-  
+
   formatTime(seconds: number): string {
     const minutes = Math.floor(seconds / 60).toString().padStart(2, '0');
     const secs = (seconds % 60).toString().padStart(2, '0');
@@ -167,7 +183,9 @@ export class PomodoroComponent implements OnInit, OnDestroy{
   }
 
   getProgressPercent(timeLeft: number): number {
-    const isLongBreak = this.completedSessions % this.longBreakInterval === 0;
+    const isLongBreak = this.sessionType === 'break' &&
+                        this.completedSessions !== 0 &&
+                        this.completedSessions % this.longBreakInterval === 0;
     const total = this.sessionType === 'work'
       ? this.sessionDurations.work
       : isLongBreak
