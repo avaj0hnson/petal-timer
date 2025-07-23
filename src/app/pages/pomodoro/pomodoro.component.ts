@@ -132,7 +132,6 @@ export class PomodoroComponent implements OnInit, OnDestroy{
 
   skipSession(): void {
     if (this.sessionType === 'work') {
-      this.timerService.pause();
       this.showSkipConfirmModal = true;
     } else {
       this.timerService.stop();
