@@ -1,7 +1,7 @@
 # 🌸 Petal Timer
 [![codecov](https://codecov.io/gh/avaj0hnson/petal-timer/branch/main/graph/badge.svg)](https://codecov.io/gh/avaj0hnson/petal-timer)
 
-A cute and modern Pomodoro timer built for realistic 8–5 workdays — complete with customizable sessions, motivating badges, themeable visuals, and real-time progress tracking. Stay focused, structured, and stylish.
+A cute and modern Pomodoro timer built for realistic 8–5 workdays — complete with customizable sessions, motivating badges, themeable visuals, a task list to track what you're working on, and real-time progress tracking. Stay focused, structured, and stylish.
 
 <img src="public/preview.png" alt="Petal Timer Preview" style="border-radius: 1rem; max-width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
 
@@ -11,6 +11,7 @@ A cute and modern Pomodoro timer built for realistic 8–5 workdays — complete
 
 - ⏱ **Workday-Based Pomodoro Flow**: Aligns with a standard 8–5 schedule.
 - 🛠 **Customizable Sessions**: Set your own preferred hours and breaks.
+- ✅ **Task List Integration**: Jot down and check off tasks for each session.
 - 📊 **Live Progress Tracker**: See your daily productivity unfold.
 - 🌸 **Badges & Confetti**: Earn adorable rewards for every session.
 - 🔔 **Sound Alerts**: Gentle reminders to switch between focus and rest.
