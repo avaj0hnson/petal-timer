@@ -1,0 +1,57 @@
+<div
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 sm:p-6"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="info-heading"
+    cdkTrapFocus
+>
+    <div
+        class="w-full max-w-md h-full sm:h-auto overflow-y-auto sm:overflow-visible rounded-2xl p-6 shadow-xl relative outline-none"
+        tabindex="-1"
+        [ngClass]="[theme.modalBackgroundClass, theme.textClass]"
+    >
+        <!-- Close Button (X) -->
+        <button
+            (click)="close.emit()"
+            title="Close"
+            aria-label="Close info"
+            class="absolute top-4 right-4 text-2xl transition-colors p-2"
+            [ngClass]="theme.iconButtonClass"
+        >
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+
+        <!-- Modal Content -->
+        <div class="space-y-6 font-cute text-center mt-8 sm:mt-0">
+            <h2 id="info-heading" class="text-2xl font-bold">About Petal Timer 🌸</h2>
+
+            <p class="text-base leading-relaxed">
+                Petal Timer is a cute and motivating Pomodoro timer designed for real 9–5 workdays.
+                Customize your work hours, break durations, and theme. Stay focused, earn badges, and get things done—all in a soft, cozy aesthetic.
+            </p>
+
+            <h3 class="text-xl font-bold">Privacy & Storage</h3>
+            <p class="text-base leading-relaxed">
+                This app does <strong>not</strong> collect or send any personal data.
+                Your settings (theme, work/break durations, custom hours, and task list) are saved in your browser only via <code>localStorage</code>.
+            </p>
+
+            <h3 class="text-xl font-bold">Credits</h3>
+            <p class="text-base">
+                Icons by <a href="https://fontawesome.com" rel="noopener" class="underline hover:text-blue-500" target="_blank">Font Awesome</a>.
+                Font: <a href="https://fonts.google.com/specimen/Rubik" rel="noopener" class="underline hover:text-blue-500" target="_blank">Rubik</a>.
+            </p>
+            <p class="text-base">© 2025 Ava Johnson. All rights reserved.</p>
+
+            <!-- Buy Me a Coffee -->
+            <a
+                href="https://coff.ee/avaj0hnson"
+                target="_blank"
+                rel="noopener"
+                class="inline-block bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-2 px-4 rounded-full shadow-md transition"
+            >
+                ☕ Buy Me a Coffee
+            </a>
+        </div>
+    </div>
+</div>
