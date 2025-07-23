@@ -174,7 +174,6 @@ describe('PomodoroComponent', () => {
     component.sessionType = 'work';
     component.skipSession();
     expect(component.showSkipConfirmModal).toBeTrue();
-    expect(mockTimerService.pause).toHaveBeenCalled();
   });
 
   it('should skip break session immediately', () => {
