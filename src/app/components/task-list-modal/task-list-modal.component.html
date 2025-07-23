@@ -23,7 +23,7 @@
 
         <!-- Modal Header -->
         <div class="space-y-4 font-cute text-center">
-            <h2 id="task-modal-heading" class="text-2xl font-bold">📝 Task List</h2>
+            <h2 id="task-modal-heading" class="text-2xl font-bold">Task List</h2>
 
             <!-- New Task Input -->
             <div class="flex gap-0 overflow-hidden rounded-full border border-opacity-50 shadow-inner">
@@ -48,6 +48,23 @@
                     Add
                 </button>
             </div>
+
+            <!-- Task Progress or Prompt -->
+            <div *ngIf="tasks.length > 0; else noTasks">
+                <div class="w-full bg-black/10 rounded-full h-3 overflow-hidden shadow-inner">
+                    <div
+                    class="h-full rounded-full transition-all duration-500"
+                    [ngClass]="theme.progressFillClass"
+                    [style.width.%]="taskCompletionPercentage"
+                    ></div>
+                </div>
+                <p class="text-sm font-medium mt-1">{{ taskCompletionLabel }}</p>
+            </div>
+            <ng-template #noTasks>
+                <p class="text-base italic text-center text-opacity-80 mt-4">
+                    🌱 Let's plant your first task!
+                </p>
+            </ng-template>
 
             <!-- Task List -->
             <div class="scroll-area text-left space-y-2 max-h-[250px] overflow-y-auto mt-2">

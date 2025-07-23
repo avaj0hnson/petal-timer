@@ -36,4 +36,15 @@ export class TaskListModalComponent {
   onEscapeKey(event: KeyboardEvent): void {
     this.close.emit();
   }
+
+  get taskCompletionPercentage(): number {
+    if (this.tasks.length === 0) return 0;
+    const completed = this.tasks.filter(t => t.completed).length;
+    return (completed / this.tasks.length) * 100;
+  }
+
+  get taskCompletionLabel(): string {
+    const completed = this.tasks.filter(t => t.completed).length;
+    return `${completed} of ${this.tasks.length} tasks complete 🌱`;
+  }
 }
