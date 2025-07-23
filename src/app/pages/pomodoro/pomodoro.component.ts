@@ -64,6 +64,9 @@ export class PomodoroComponent implements OnInit, OnDestroy{
     });
 
     this.timeLeft$ = this.timerService.timeLeft$;
+    this.timeLeft$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(timeLeft => this.updateDocumentTitle(timeLeft));
     this.timerService.setInitialTime(this.sessionDurations.work);
 
     this.timerService.timeLeftCompleted$
@@ -202,5 +205,18 @@ export class PomodoroComponent implements OnInit, OnDestroy{
     this.destroy$.next();
     this.destroy$.complete();
     this.timerService.stop();
+    if (typeof document !== 'undefined') {
+      document.title = 'Petal Timer – A Cute & Customizable Pomodoro Timer';
+    }
+  }
+
+  private updateDocumentTitle(timeLeft: number) {
+    const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+    const seconds = (timeLeft % 60).toString().padStart(2, '0');
+    const sessionLabel = this.sessionType === 'break' ? 'Break' : 'Focus';
+
+    if (typeof document !== 'undefined') {
+      document.title = `⏱ ${minutes}:${seconds} – ${sessionLabel} | Petal Timer`;
+    }
   }
 }
