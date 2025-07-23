@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SettingsModalComponent } from './settings-modal.component';
-import { Theme } from '../models/theme.model';
+import { Theme } from '../../models/theme.model';
 import { of } from 'rxjs';
-import { ThemeService } from '../services/theme.service';
+import { ThemeService } from '../../services/theme.service';
 
 describe('SettingsModalComponent', () => {
   let component: SettingsModalComponent;

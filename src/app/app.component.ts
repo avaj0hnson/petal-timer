@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PomodoroComponent } from "./pomodoro/pomodoro.component";
+import { PomodoroComponent } from "./pages/pomodoro/pomodoro.component";
 
 @Component({
   selector: 'app-root',

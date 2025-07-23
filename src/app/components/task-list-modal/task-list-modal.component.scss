@@ -1,0 +1,46 @@
+:host ::ng-deep .scroll-area::-webkit-scrollbar {
+    width: 8px;
+}
+:host ::ng-deep .scroll-area::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+:host ::ng-deep .scroll-area::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    transition: background-color 0.2s;
+}
+
+:host-context(.theme-blush) ::ng-deep .scroll-area::-webkit-scrollbar-thumb {
+    background-color: #a61e4d;
+}
+
+/* Theme: Minty Fresh */
+:host-context(.theme-mint) ::ng-deep .scroll-area::-webkit-scrollbar-thumb {
+    background-color: #087f5b;
+}
+
+/* Theme: Sunbeam */
+:host-context(.theme-sunbeam) ::ng-deep .scroll-area::-webkit-scrollbar-thumb {
+    background-color: #78350f;
+}
+
+/* Theme: Deep Sea */
+:host-context(.theme-deepsea) ::ng-deep .scroll-area::-webkit-scrollbar-thumb {
+    background-color: #a5f3fc;
+}
+
+/* Theme: Midnight */
+:host-context(.theme-midnight) ::ng-deep .scroll-area::-webkit-scrollbar-thumb {
+    background-color: #f3f4f6;
+}
+
+/* Theme: Galaxy */
+:host-context(.theme-galaxy) ::ng-deep .scroll-area::-webkit-scrollbar-thumb {
+    background-color: #c4b5fd;
+}
+
+:host ::ng-deep .scroll-area::-webkit-scrollbar-thumb:hover {
+    filter: brightness(1.1);
+}

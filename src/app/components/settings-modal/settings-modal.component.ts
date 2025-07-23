@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, HostListener, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Theme } from '../models/theme.model';
-import { ThemeService } from '../services/theme.service';
+import { Theme } from '../../models/theme.model';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-settings-modal',

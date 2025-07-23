@@ -1,22 +1,25 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, ModuleWithProviders, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CircleProgressOptions, NgCircleProgressModule } from 'ng-circle-progress';
-import { TimelineComponent } from "../timeline/timeline.component";
-import { BadgePlaygroundComponent } from "../badge-playground/badge-playground.component";
-import { PomodoroTimerService } from '../services/pomodoro-timer.service';
-import { SoundService } from '../services/sound.service';
-import { BadgeService } from '../services/badge.service';
-import { ConfettiService } from '../services/confetti.service';
+import { TimelineComponent } from "../../components/timeline/timeline.component";
+import { BadgePlaygroundComponent } from "../../components/badge-playground/badge-playground.component";
+import { PomodoroTimerService } from '../../services/pomodoro-timer.service';
+import { SoundService } from '../../services/sound.service';
+import { BadgeService } from '../../services/badge.service';
+import { ConfettiService } from '../../services/confetti.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { SettingsModalComponent } from "../settings-modal/settings-modal.component";
-import { SettingsService } from '../services/settings.service';
-import { ThemeService } from '../services/theme.service';
-import { Theme } from '../models/theme.model';
+import { SettingsModalComponent } from "../../components/settings-modal/settings-modal.component";
+import { SettingsService } from '../../services/settings.service';
+import { ThemeService } from '../../services/theme.service';
+import { Theme } from '../../models/theme.model';
+import { TaskListModalComponent } from "../../components/task-list-modal/task-list-modal.component";
+import { InfoModalComponent } from "../../components/info-modal/info-modal.component";
+import { SkipConfirmModalComponent } from "../../components/skip-confirm-modal/skip-confirm-modal.component";
 
 @Component({
   selector: 'app-pomodoro',
   standalone: true,
-  imports: [CommonModule, NgCircleProgressModule, TimelineComponent, BadgePlaygroundComponent, SettingsModalComponent],
+  imports: [CommonModule, NgCircleProgressModule, TimelineComponent, BadgePlaygroundComponent, SettingsModalComponent, TaskListModalComponent, InfoModalComponent, SkipConfirmModalComponent],
   providers: [
     { provide: CircleProgressOptions, useValue: {} }
   ],
@@ -27,6 +30,7 @@ export class PomodoroComponent implements OnInit, OnDestroy{
   isRunning = false;
   showInfoModal = false;
   showSkipConfirmModal = false;
+  showTaskModal = false;
   sessionType: 'work' | 'break' = 'work';
   completedSessions = 0;
   longBreakInterval = 4;
@@ -117,12 +121,6 @@ export class PomodoroComponent implements OnInit, OnDestroy{
       });
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-    this.timerService.stop();
-  }
-
   toggleTimer(): void {
     if (this.isRunning) {
       this.timerService.pause();
@@ -198,24 +196,11 @@ export class PomodoroComponent implements OnInit, OnDestroy{
   restartBadges(): void {
     this.badgeService.setBadgeSet(this.badgeService.getCurrentBadgeSet());
     this.activeBadges = this.badgeService.activeBadges;
-  }  
+  }
 
-  @HostListener('document:keydown.escape', ['$event'])
-  handleEscapeKey(event: KeyboardEvent): void {
-    let modalClosed = false;
-
-    if (this.showInfoModal) {
-      this.showInfoModal = false;
-      modalClosed = true;
-    }
-
-    if (this.showSkipConfirmModal) {
-      this.showSkipConfirmModal = false;
-      modalClosed = true;
-    }
-
-    if (modalClosed) {
-      event.preventDefault();
-    }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.timerService.stop();
   }
 }

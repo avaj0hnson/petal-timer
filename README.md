@@ -47,33 +47,28 @@ A cute and modern Pomodoro timer built for realistic 8–5 workdays — complete
 ## 📁 Project Structure
 ```text
 petal-timer/
-├── .github/               # GitHub Actions workflow for tests and coverage
-├── public/                # Static assets (favicon, preview image, robots.txt)
-│   ├── sounds/            # Timer sounds
-│   └── preview.png        # UI screenshot for README
-├── src/                   # Application source code
-│   ├── app/               # Core app components and features
-│   │   ├── badge-playground/  # Badge unlock and reward system
-│   │   ├── constants/         # Theme colors, badge sets, and defaults
-│   │   ├── models/            # TypeScript interfaces and enums
-│   │   ├── pomodoro/          # Main Pomodoro logic and timer UI
-│   │   ├── services/          # Sound, confetti, theme, and timer logic
-│   │   ├── settings-modal/    # Session customization modal
-│   │   └── timeline/          # Daily timeline and progress tracker
-│   ├── app.component.*        # Root component files
-│   ├── app.config.ts          # Application configuration
-│   ├── app.config.server.ts   # Server-side config (for SSR)
-│   ├── index.html             # App entry HTML
-│   ├── main.ts                # App bootstrap (client)
-│   ├── main.server.ts         # App bootstrap (server)
-│   └── styles.scss            # Global styles
-├── server.ts              # Server-side rendering entry point
-├── karma.conf.js          # Karma test runner config
+├── .github/               # GitHub Actions for testing and coverage
+├── public/                # Static assets (favicon, sounds, preview image)
+│   └── sounds/            # Timer sounds
+├── src/
+│   ├── app/
+│   │   ├── pages/
+│   │   │   └── pomodoro/              # Main Pomodoro timer page
+│   │   ├── components/
+│   │   │   ├── badge-playground/     # Badge reward system
+│   │   │   ├── info-modal/           # Privacy and attribution modal
+│   │   │   ├── settings-modal/       # Timer settings modal
+│   │   │   ├── skip-confirm-modal/   # Confirmation before skipping
+│   │   │   ├── task-list-modal/      # To-do list modal
+│   │   │   └── timeline/             # Daily progress bar
+│   │   ├── constants/                # Theme colors and default values
+│   │   ├── models/                   # TypeScript interfaces
+│   │   └── services/                 # Timer, theme, task, and sound logic
+│   └── styles.scss                  # Global styles
 ├── angular.json           # Angular CLI configuration
-├── tailwind.config.js     # TailwindCSS theme setup
-├── tsconfig*.json         # TypeScript configs
-├── package.json           # Project metadata and scripts
-└── README.md              # This file 🌸
+├── tailwind.config.js     # Tailwind theme setup
+├── package.json           # Dependencies and scripts
+└── README.md              # You are here 🌸
 ```
 
 ---
