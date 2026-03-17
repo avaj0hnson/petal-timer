@@ -41,7 +41,7 @@
     "@types/jasmine": "~5.1.0",
     "@types/luxon": "^3.6.2",
     "@types/node": "^18.18.0",
-    "angular-eslint": "21.0.1",
+    "angular-eslint": "^18.4.3",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.39.1",
     "jasmine-core": "~5.2.0",
