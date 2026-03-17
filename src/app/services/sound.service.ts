@@ -1,5 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { Subscription } from 'rxjs';
 import { SettingsService } from './settings.service';
 
 @Injectable({ providedIn: 'root' })
@@ -8,8 +9,9 @@ export class SoundService {
   private breakEndSound?: HTMLAudioElement;
   private isBrowser: boolean;
   private muted = false;
+  private mutedSub?: Subscription;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private settingsService: SettingsService) {
+  constructor(@Inject(PLATFORM_ID) private platformId: object, private settingsService: SettingsService) {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
     if (this.isBrowser) {
@@ -19,7 +21,7 @@ export class SoundService {
       this.workEndSound.load();
       this.breakEndSound.load();
 
-      this.settingsService.muted$.subscribe(value => {
+      this.mutedSub = this.settingsService.muted$.subscribe(value => {
         this.muted = value;
       });
     }

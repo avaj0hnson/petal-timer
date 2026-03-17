@@ -25,7 +25,7 @@ describe('SoundService', () => {
       ]
     });
 
-    // @ts-ignore
+    // @ts-expect-error -- FakeAudio is a test double for Audio
     window.Audio = FakeAudio;
     service = TestBed.inject(SoundService);
   });
@@ -64,7 +64,7 @@ describe('SoundService', () => {
       ]
     });
 
-    // @ts-ignore
+    // @ts-expect-error -- FakeAudio is a test double for Audio
     window.Audio = FakeAudio;
     service = TestBed.inject(SoundService);
 

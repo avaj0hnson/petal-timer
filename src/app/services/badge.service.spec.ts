@@ -44,7 +44,7 @@ describe('BadgeService', () => {
 
   it('should not add more badges after all are unlocked', () => {
     service.setBadgeSet(mockBadges);
-    for (let i = 0; i < mockBadges.length; i++) {
+    for (const _badge of mockBadges) {
       service.unlockNextBadge();
     }
     service.unlockNextBadge();

@@ -14,8 +14,8 @@ export class SkipConfirmModalComponent {
   @Output() cancel = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<void>();
 
-  @HostListener('document:keydown.escape', ['$event'])
-  onEscapeKey(event: KeyboardEvent): void {
+  @HostListener('document:keydown.escape')
+  onEscapeKey(): void {
     this.cancel.emit();
   }
 }

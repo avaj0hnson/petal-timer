@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnChanges, OnInit, PLATFORM_ID, SimpleChanges } from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnDestroy, OnInit, PLATFORM_ID, SimpleChanges } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { DateTime } from 'luxon';
 import { FormsModule } from '@angular/forms';
@@ -10,24 +10,31 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss']
 })
-export class TimelineComponent implements OnInit, OnChanges {
-  @Input() startHour: number = 8;
-  @Input() endHour: number = 17;
+export class TimelineComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() startHour = 8;
+  @Input() endHour = 17;
   @Input() textClass = '';
   @Input() progressColorClass = '';
   @Input() backgroundClass = '';
-  @Input() modalBackgroundClass: string = '';
+  @Input() modalBackgroundClass = '';
 
   timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
   hours: number[] = Array.from({ length: 24 }, (_, i) => i);
   currentProgress = 0;
+  private intervalId?: ReturnType<typeof setInterval>;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.updateProgress();
-      setInterval(() => this.updateProgress(), 60000);
+      this.intervalId = setInterval(() => this.updateProgress(), 60000);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
     }
   }
 

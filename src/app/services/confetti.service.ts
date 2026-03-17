@@ -6,7 +6,7 @@ import { ThemeService } from './theme.service';
 @Injectable({ providedIn: 'root' })
 export class ConfettiService {
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object, 
+    @Inject(PLATFORM_ID) private platformId: object, 
     private themeService: ThemeService
   ) {}
   
@@ -15,7 +15,7 @@ export class ConfettiService {
     this.fireConfetti();
   }
 
-  fireConfetti(): void {
+  private fireConfetti(): void {
     const theme = this.themeService.getCurrentTheme();
     const colors = theme.confettiColors ?? ['#ffffff'];
 

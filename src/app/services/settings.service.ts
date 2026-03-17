@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { Settings } from '../models/settings.model';
 
@@ -22,7 +23,7 @@ export class SettingsService {
   shortBreakDuration$ = this._shortBreakDuration.asObservable();
   longBreakDuration$ = this._longBreakDuration.asObservable();
 
-  constructor() {
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {
     this.loadSettings();
   }
 
@@ -50,8 +51,8 @@ export class SettingsService {
   }
 
   setWorkDuration(minutes: number) {
-  this._workDuration.next(minutes);
-  this.saveSettings();
+    this._workDuration.next(minutes);
+    this.saveSettings();
   }
 
   setShortBreakDuration(minutes: number) {
@@ -65,9 +66,11 @@ export class SettingsService {
   }
 
   private loadSettings() {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const saved = localStorage.getItem(SETTINGS_KEY);
-      if (saved) {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const saved = localStorage.getItem(SETTINGS_KEY);
+    if (saved) {
+      try {
         const settings: Settings = JSON.parse(saved);
         this._startHour.next(settings.startHour);
         this._endHour.next(settings.endHour);
@@ -75,21 +78,23 @@ export class SettingsService {
         this._workDuration.next(settings.workDuration || 25);
         this._shortBreakDuration.next(settings.shortBreakDuration || 5);
         this._longBreakDuration.next(settings.longBreakDuration || 15);
+      } catch {
+        console.warn('[SettingsService] Failed to parse saved settings. Using defaults.');
       }
     }
   }
-  
+
   private saveSettings() {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const settings: Settings = {
-        startHour: this._startHour.value,
-        endHour: this._endHour.value,
-        muted: this._muted.value,
-        workDuration: this._workDuration.value,
-        shortBreakDuration: this._shortBreakDuration.value,
-        longBreakDuration: this._longBreakDuration.value
-      };
-      localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-    }
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const settings: Settings = {
+      startHour: this._startHour.value,
+      endHour: this._endHour.value,
+      muted: this._muted.value,
+      workDuration: this._workDuration.value,
+      shortBreakDuration: this._shortBreakDuration.value,
+      longBreakDuration: this._longBreakDuration.value
+    };
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
   }  
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CircleProgressOptions, NgCircleProgressModule } from 'ng-circle-progress';
 import { TimelineComponent } from "../../components/timeline/timeline.component";
 import { BadgePlaygroundComponent } from "../../components/badge-playground/badge-playground.component";
@@ -8,6 +8,7 @@ import { SoundService } from '../../services/sound.service';
 import { BadgeService } from '../../services/badge.service';
 import { ConfettiService } from '../../services/confetti.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 import { SettingsModalComponent } from "../../components/settings-modal/settings-modal.component";
 import { SettingsService } from '../../services/settings.service';
 import { ThemeService } from '../../services/theme.service';
@@ -38,9 +39,16 @@ export class PomodoroComponent implements OnInit, OnDestroy{
   theme$!: Observable<Theme>;
   themeReady$!: Observable<boolean>;
   timeLeft$!: Observable<number>;
+  showSettings$: Observable<boolean>;
+  startHour$: Observable<number>;
+  endHour$: Observable<number>;
+  muted$: Observable<boolean>;
+  workDuration$: Observable<number>;
+  shortBreakDuration$: Observable<number>;
+  longBreakDuration$: Observable<number>;
   private destroy$ = new Subject<void>();
 
-  readonly sessionDurations = {
+  sessionDurations = {
     work: 25 * 60,
     shortBreak: 5 * 60,
     longBreak: 15 * 60,
@@ -50,9 +58,27 @@ export class PomodoroComponent implements OnInit, OnDestroy{
               private soundService: SoundService,
               private badgeService: BadgeService,
               private confettiService: ConfettiService,
-              public settingsService: SettingsService,
-              private themeService: ThemeService
-  ) {}
+              private settingsService: SettingsService,
+              private themeService: ThemeService,
+              private titleService: Title
+  ) {
+    this.showSettings$ = this.settingsService.showSettings$;
+    this.startHour$ = this.settingsService.startHour$;
+    this.endHour$ = this.settingsService.endHour$;
+    this.muted$ = this.settingsService.muted$;
+    this.workDuration$ = this.settingsService.workDuration$;
+    this.shortBreakDuration$ = this.settingsService.shortBreakDuration$;
+    this.longBreakDuration$ = this.settingsService.longBreakDuration$;
+  }
+
+  openSettings(): void { this.settingsService.openSettings(); }
+  closeSettings(): void { this.settingsService.closeSettings(); }
+  setWorkDuration(min: number): void { this.settingsService.setWorkDuration(min); }
+  setShortBreakDuration(min: number): void { this.settingsService.setShortBreakDuration(min); }
+  setLongBreakDuration(min: number): void { this.settingsService.setLongBreakDuration(min); }
+  setStartHour(hour: number): void { this.settingsService.setStartHour(hour); }
+  setEndHour(hour: number): void { this.settingsService.setEndHour(hour); }
+  setMuted(muted: boolean): void { this.settingsService.setMuted(muted); }
   
   ngOnInit(): void {
     this.themeReady$ = this.themeService.themeReady$;
@@ -204,18 +230,13 @@ export class PomodoroComponent implements OnInit, OnDestroy{
     this.destroy$.next();
     this.destroy$.complete();
     this.timerService.stop();
-    if (typeof document !== 'undefined') {
-      document.title = 'Petal Timer – A Cute & Customizable Pomodoro Timer';
-    }
+    this.titleService.setTitle('Petal Timer – A Cute & Customizable Pomodoro Timer');
   }
 
   private updateDocumentTitle(timeLeft: number) {
     const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
     const seconds = (timeLeft % 60).toString().padStart(2, '0');
     const sessionLabel = this.sessionType === 'break' ? 'Break' : 'Focus';
-
-    if (typeof document !== 'undefined') {
-      document.title = `⏱ ${minutes}:${seconds} – ${sessionLabel} | Petal Timer`;
-    }
+    this.titleService.setTitle(`⏱ ${minutes}:${seconds} – ${sessionLabel} | Petal Timer`);
   }
 }

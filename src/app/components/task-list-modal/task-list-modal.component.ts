@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 import { Theme } from '../../models/theme.model';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
@@ -12,16 +13,22 @@ import { Task } from '../../models/task.model';
   templateUrl: './task-list-modal.component.html',
   styleUrl: './task-list-modal.component.scss'
 })
-export class TaskListModalComponent {
+export class TaskListModalComponent implements OnInit, OnDestroy {
   @Input() theme!: Theme;
   @Output() close = new EventEmitter<void>();
   newTaskLabel = '';
   tasks: Task[] = [];
+  private destroy$ = new Subject<void>();
 
   constructor(public taskService: TaskService) {}
 
   ngOnInit(): void {
-    this.taskService.tasks$.subscribe(t => this.tasks = t);
+    this.taskService.tasks$.pipe(takeUntil(this.destroy$)).subscribe(t => this.tasks = t);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   addTask(): void {
@@ -32,8 +39,8 @@ export class TaskListModalComponent {
     }
   }
 
-  @HostListener('document:keydown.escape', ['$event'])
-  onEscapeKey(event: KeyboardEvent): void {
+  @HostListener('document:keydown.escape')
+  onEscapeKey(): void {
     this.close.emit();
   }
 

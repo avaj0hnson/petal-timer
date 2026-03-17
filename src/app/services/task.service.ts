@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Task } from '../models/task.model';
 import { BehaviorSubject } from 'rxjs';
 
@@ -15,7 +16,7 @@ export class TaskService {
     return this._tasks.value;
   }
 
-  constructor() {
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {
     this.loadTasks();
   }
 
@@ -34,23 +35,27 @@ export class TaskService {
 
   toggleCompleted(index: number): void {
     const updated = [...this.tasks];
-    updated[index].completed = !updated[index].completed;
+    updated[index] = { ...updated[index], completed: !updated[index].completed };
     this._tasks.next(updated);
     this.saveTasks();
   }
 
   private loadTasks(): void {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem(TASKS_KEY);
-      if (saved) {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const saved = localStorage.getItem(TASKS_KEY);
+    if (saved) {
+      try {
         this._tasks.next(JSON.parse(saved));
+      } catch {
+        console.warn('[TaskService] Failed to parse saved tasks. Starting with empty list.');
       }
     }
   }
 
   private saveTasks(): void {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(TASKS_KEY, JSON.stringify(this._tasks.value));
-    }
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    localStorage.setItem(TASKS_KEY, JSON.stringify(this._tasks.value));
   }
 }

@@ -36,7 +36,7 @@
                 <!-- Settings Button -->
                 <button
                     aria-label="Open settings"
-                    (click)="settingsService.openSettings()"
+                    (click)="openSettings()"
                     title="Settings"
                     [ngClass]="[
                         'transition text-3xl p-2 rounded-full hover:bg-opacity-10',
@@ -134,8 +134,8 @@
             </div>
 
             <!-- Timeline -->
-            <ng-container *ngIf="(settingsService.startHour$ | async) as startHour">
-                <ng-container *ngIf="(settingsService.endHour$ | async) as endHour">
+            <ng-container *ngIf="(startHour$ | async) as startHour">
+                <ng-container *ngIf="(endHour$ | async) as endHour">
                     <div class="w-full max-w-5xl mt-12">
                         <app-timeline
                             [startHour]="startHour" 
@@ -150,23 +150,23 @@
             </ng-container>
 
             <!-- Settings Modal -->
-            <ng-container *ngIf="settingsService.showSettings$ | async">
-                <ng-container *ngIf="(settingsService.startHour$ | async) as startHourForModal">
-                    <ng-container *ngIf="(settingsService.endHour$ | async) as endHourForModal">
+            <ng-container *ngIf="showSettings$ | async">
+                <ng-container *ngIf="(startHour$ | async) as startHourForModal">
+                    <ng-container *ngIf="(endHour$ | async) as endHourForModal">
                         <app-settings-modal
                             [startHour]="startHourForModal"
                             [endHour]="endHourForModal"
-                            [muted]="(settingsService.muted$ | async)!"
-                            [workDuration]="(settingsService.workDuration$ | async)!"
-                            [shortBreakDuration]="(settingsService.shortBreakDuration$ | async)!"
-                            [longBreakDuration]="(settingsService.longBreakDuration$ | async)!"
-                            (workDurationChange)="settingsService.setWorkDuration($event)"
-                            (shortBreakDurationChange)="settingsService.setShortBreakDuration($event)"
-                            (longBreakDurationChange)="settingsService.setLongBreakDuration($event)"
-                            (startHourChange)="settingsService.setStartHour($event)"
-                            (endHourChange)="settingsService.setEndHour($event)"
-                            (mutedChange)="settingsService.setMuted($event)"
-                            (close)="settingsService.closeSettings()"
+                            [muted]="(muted$ | async)!"
+                            [workDuration]="(workDuration$ | async)!"
+                            [shortBreakDuration]="(shortBreakDuration$ | async)!"
+                            [longBreakDuration]="(longBreakDuration$ | async)!"
+                            (workDurationChange)="setWorkDuration($event)"
+                            (shortBreakDurationChange)="setShortBreakDuration($event)"
+                            (longBreakDurationChange)="setLongBreakDuration($event)"
+                            (startHourChange)="setStartHour($event)"
+                            (endHourChange)="setEndHour($event)"
+                            (mutedChange)="setMuted($event)"
+                            (close)="closeSettings()"
                         ></app-settings-modal>
                     </ng-container>
                 </ng-container>

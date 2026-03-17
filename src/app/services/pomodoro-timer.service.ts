@@ -10,10 +10,10 @@ export class PomodoroTimerService {
   timeLeftCompleted$ = this._timeLeftCompleted.asObservable();
 
   private intervalSub?: Subscription;
-  private duration: number = 0;
+  private duration = 0;
   private startTimestamp: number | null = null;
-  private remainingTime: number = 0;
-  private isRunning: boolean = false;
+  private remainingTime = 0;
+  private isRunning = false;
 
   setInitialTime(duration: number) {
     this.stop();

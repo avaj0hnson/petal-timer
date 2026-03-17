@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, HostListener, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 import { Theme } from '../../models/theme.model';
 import { ThemeService } from '../../services/theme.service';
 
@@ -11,7 +12,7 @@ import { ThemeService } from '../../services/theme.service';
   templateUrl: './settings-modal.component.html',
   styleUrl: './settings-modal.component.scss'
 })
-export class SettingsModalComponent {
+export class SettingsModalComponent implements OnInit, OnDestroy {
   @Input() startHour!: number;
   @Input() endHour!: number;
   @Input() muted!: boolean;
@@ -30,13 +31,23 @@ export class SettingsModalComponent {
   themes: Theme[] = [];
   selectedThemeName = '';
   currentTheme!: Theme;
+  private destroy$ = new Subject<void>();
 
   constructor(private themeService: ThemeService) {
     this.themes = this.themeService.getThemes();
     this.currentTheme = this.themeService.getCurrentTheme();
     this.selectedThemeName = this.currentTheme.name;
+  }
 
-    this.themeService.currentTheme$.subscribe(theme => this.currentTheme = theme);
+  ngOnInit(): void {
+    this.themeService.currentTheme$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(theme => this.currentTheme = theme);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   formatHour(hour: number): string {
@@ -53,8 +64,8 @@ export class SettingsModalComponent {
     return this.hours.filter(hour => hour > this.startHour);
   }
 
-  @HostListener('document:keydown.escape', ['$event'])
-  onEscapeKey(event: KeyboardEvent) {
+  @HostListener('document:keydown.escape')
+  onEscapeKey() {
     this.close.emit();
   }
 

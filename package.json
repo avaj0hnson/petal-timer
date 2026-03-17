@@ -1,13 +1,14 @@
 {
   "name": "petal-timer",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:petal-timer": "node dist/petal-timer/server/server.mjs"
+    "serve:ssr:petal-timer": "node dist/petal-timer/server/server.mjs",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -40,7 +41,9 @@
     "@types/jasmine": "~5.1.0",
     "@types/luxon": "^3.6.2",
     "@types/node": "^18.18.0",
+    "angular-eslint": "21.0.1",
     "autoprefixer": "^10.4.21",
+    "eslint": "^9.39.1",
     "jasmine-core": "~5.2.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -49,6 +52,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
-    "typescript": "~5.5.2"
+    "typescript": "~5.5.2",
+    "typescript-eslint": "8.46.4"
   }
 }

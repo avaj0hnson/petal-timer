@@ -177,6 +177,7 @@ describe('PomodoroComponent', () => {
   });
 
   it('should skip break session immediately', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     spyOn<any>(component, 'completeSession');
     component.sessionType = 'break';
 
@@ -187,6 +188,7 @@ describe('PomodoroComponent', () => {
   });
 
   it('should confirm skip and not award badge', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     spyOn<any>(component, 'completeSession');
     component.confirmSkipSession();
 
