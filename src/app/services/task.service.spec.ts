@@ -53,7 +53,9 @@ describe('TaskService', () => {
     const mockTasks: Task[] = [{ label: 'Stored task', completed: true }];
     localStorage.setItem('petalTasks', JSON.stringify(mockTasks));
 
-    const loadedService = new TaskService();
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({});
+    const loadedService = TestBed.inject(TaskService);
     expect(loadedService.tasks).toEqual(mockTasks);
   });
 });

@@ -104,7 +104,7 @@ describe('SettingsModalComponent', () => {
 
   it('should emit close event when Escape key is pressed', () => {
     spyOn(component.close, 'emit');
-    component.onEscapeKey(new KeyboardEvent('keydown', { key: 'Escape' }));
+    component.onEscapeKey();
     expect(component.close.emit).toHaveBeenCalled();
   });
 
