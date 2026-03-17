@@ -1,155 +1,194 @@
 <ng-container *ngIf="themeReady$ | async">
     <ng-container *ngIf="theme$ | async as theme">
         <div
-            class="flex flex-col items-center justify-start min-h-screen w-full transition-colors duration-500 p-8"
+            class="flex flex-col items-center min-h-screen w-full transition-colors duration-500 px-4 py-6 sm:px-6"
             [ngClass]="theme.backgroundClass"
         >
-            <div class="absolute top-6 right-6 flex items-center gap-2">
-                <!-- Task List Button -->
-                <button
-                    aria-label="Open task list"
-                    (click)="showTaskModal = true"
-                    title="Tasks"
-                    [ngClass]="[
-                        'transition text-3xl p-2 rounded-full hover:bg-opacity-10',
-                        theme.textClass,
-                        theme.focusRingClass
-                    ]"
-                >
-                    <i class="fa-solid fa-list-check" aria-hidden="true"></i>
-                </button>
+            <!-- Header -->
+            <header class="w-full max-w-lg flex items-center justify-between mb-8">
+                <div class="flex items-center gap-2" [ngClass]="theme.textClass">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2C12 2 9.5 5.5 9.5 8.5C9.5 10.4 10.6 12 12 12C13.4 12 14.5 10.4 14.5 8.5C14.5 5.5 12 2 12 2Z" opacity="0.6"/>
+                        <path d="M7 6C7 6 3.5 8 3.5 11.5C3.5 13.7 5.3 15.5 7.5 15.5C9 15.5 10.3 14.5 11 13C9 12.5 7.5 10.5 7.5 8.5C7.5 7.5 7 6 7 6Z" opacity="0.4"/>
+                        <path d="M17 6C17 6 20.5 8 20.5 11.5C20.5 13.7 18.7 15.5 16.5 15.5C15 15.5 13.7 14.5 13 13C15 12.5 16.5 10.5 16.5 8.5C16.5 7.5 17 6 17 6Z" opacity="0.4"/>
+                        <path d="M12 12C12 12 8 14 8 17.5C8 20 9.8 22 12 22C14.2 22 16 20 16 17.5C16 14 12 12 12 12Z" opacity="0.8"/>
+                    </svg>
+                    <span class="font-cute font-bold text-lg tracking-wide">Petal Timer</span>
+                </div>
+                <nav class="flex items-center gap-1" aria-label="App controls">
+                    <button
+                        aria-label="Open task list"
+                        (click)="showTaskModal = true"
+                        title="Tasks"
+                        [ngClass]="[theme.textClass, theme.focusRingClass]"
+                        class="transition text-xl p-2 rounded-full hover:bg-black/5 focus:outline-none focus:ring-2"
+                    >
+                        <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+                    </button>
+                    <button
+                        aria-label="Info"
+                        (click)="showInfoModal = true"
+                        title="Info"
+                        [ngClass]="[theme.textClass, theme.focusRingClass]"
+                        class="transition text-xl p-2 rounded-full hover:bg-black/5 focus:outline-none focus:ring-2"
+                    >
+                        <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+                    </button>
+                    <button
+                        aria-label="Open settings"
+                        (click)="openSettings()"
+                        title="Settings"
+                        [ngClass]="[theme.textClass, theme.focusRingClass]"
+                        class="transition text-xl p-2 rounded-full hover:bg-black/5 focus:outline-none focus:ring-2"
+                    >
+                        <i class="fa-solid fa-gear" aria-hidden="true"></i>
+                    </button>
+                </nav>
+            </header>
 
-                <!-- Info Button -->
-                <button
-                    aria-label="Info"
-                    (click)="showInfoModal = true"
-                    title="Info"
-                    [ngClass]="[
-                        'transition text-3xl p-2 rounded-full hover:bg-opacity-10',
-                        theme.textClass,
-                        theme.focusRingClass
-                    ]"
-                >
-                    <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-                </button>
+            <!-- Main content -->
+            <main class="w-full max-w-lg flex flex-col items-center gap-8 flex-1">
 
-                <!-- Settings Button -->
-                <button
-                    aria-label="Open settings"
-                    (click)="openSettings()"
-                    title="Settings"
-                    [ngClass]="[
-                        'transition text-3xl p-2 rounded-full hover:bg-opacity-10',
-                        theme.textClass,
-                        theme.focusRingClass
-                    ]"
-                >
-                    <i class="fa-solid fa-gear" aria-hidden="true"></i>
-                </button>
-            </div>
-
-            <!-- Timer + Status -->
-            <div class="flex flex-col md:flex-row items-center justify-center gap-12 w-full max-w-6xl pt-20 md:pt-0">
-                <div class="flex flex-col items-center gap-6">
-                    <div class="relative w-[300px] h-[300px] flex items-center justify-center">
+                <!-- Timer Section -->
+                <section class="flex flex-col items-center gap-5 pt-4">
+                    <div class="relative w-[260px] h-[260px] flex items-center justify-center">
+                        <!-- Glow -->
                         <div
                             *ngIf="isRunning"
-                            [ngClass]="['absolute w-full h-full rounded-full opacity-30 blur-2xl animate-pulse', theme.textClass]"
+                            class="timer-glow absolute inset-[-20px] rounded-full"
+                            [style.background]="'radial-gradient(circle, ' + theme.ringColor + '22 0%, transparent 70%)'"
                         ></div>
-                        <div [ngClass]="[theme.modalBackgroundClass]" class="relative w-[280px] h-[280px] rounded-full shadow-xl flex items-center justify-center">
-                        <ng-container *ngIf="timeLeft$ | async as timeLeft">
-                            <circle-progress
-                                [percent]="getProgressPercent(timeLeft)"
-                                [radius]="100"
-                                [outerStrokeWidth]="12"
-                                [outerStrokeColor]="theme.ringColor"
-                                [innerStrokeWidth]="8"
-                                [innerStrokeColor]="theme.progressTrackClass"
-                                [animation]="false"
-                                [showTitle]="false"
-                                [showUnits]="false"
-                                [showSubtitle]="false"
-                                [showInnerStroke]="false"
-                                [showBackground]="false"
-                                [startFromZero]="false"
-                                [renderOnClick]="false"
-                                [clockwise]="false"
-                            ></circle-progress>
-                                <div  aria-live="polite" aria-label="Time left" role="timer" [ngClass]="[theme.textClass, 'absolute text-4xl font-cute font-bold']">
+                        <!-- Timer circle -->
+                        <div
+                            [ngClass]="theme.modalBackgroundClass"
+                            class="relative w-[240px] h-[240px] rounded-full shadow-lg flex items-center justify-center border border-black/[0.04]"
+                        >
+                            <ng-container *ngIf="timeLeft$ | async as timeLeft">
+                                <circle-progress
+                                    [percent]="getProgressPercent(timeLeft)"
+                                    [radius]="90"
+                                    [outerStrokeWidth]="6"
+                                    [outerStrokeColor]="theme.ringColor"
+                                    [innerStrokeWidth]="6"
+                                    [innerStrokeColor]="theme.progressTrackClass"
+                                    [animation]="false"
+                                    [showTitle]="false"
+                                    [showUnits]="false"
+                                    [showSubtitle]="false"
+                                    [showInnerStroke]="false"
+                                    [showBackground]="false"
+                                    [startFromZero]="false"
+                                    [renderOnClick]="false"
+                                    [clockwise]="false"
+                                ></circle-progress>
+                                <div
+                                    aria-live="polite"
+                                    aria-label="Time left"
+                                    role="timer"
+                                    [ngClass]="theme.textClass"
+                                    class="absolute text-5xl font-cute font-light tracking-tight"
+                                >
                                     {{ formatTime(timeLeft) }}
                                 </div>
-                        </ng-container>
+                            </ng-container>
                         </div>
                     </div>
 
-                    <div class="flex gap-4">
-                        <!-- Start/Pause Button -->
+                    <!-- Session label -->
+                    <div [ngClass]="theme.textClass" class="text-sm font-medium tracking-widest uppercase">
+                        {{ sessionType === 'work' ? 'Focus' : 'Break' }}
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="flex gap-3">
                         <button
                             (click)="toggleTimer()"
                             [attr.aria-label]="isRunning ? 'Pause timer' : 'Start timer'"
                             title="Toggle Timer"
-                            [ngClass]="[
-                                'px-8 py-3 rounded-full text-white font-cute text-lg tracking-wide shadow-lg hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 flex items-center gap-2',
-                                theme.buttonClass,
-                                theme.focusRingClass
-                            ]"
+                            [ngClass]="[theme.buttonClass, theme.focusRingClass]"
+                            class="px-6 py-2.5 rounded-full text-white font-cute text-sm tracking-wide shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 flex items-center gap-2"
                         >
                             <i [class]="isRunning ? 'fa-solid fa-pause' : 'fa-solid fa-play'" aria-hidden="true"></i>
+                            <span>{{ isRunning ? 'Pause' : 'Start' }}</span>
                         </button>
-                        <!-- Skip Button -->
                         <button
                             (click)="skipSession()"
                             aria-label="Skip session"
                             title="Skip"
-                            [ngClass]="[
-                                'px-8 py-3 rounded-full text-white font-cute text-lg tracking-wide shadow-lg hover:shadow-2xl transition-all duration-300 focus:outline-none focus:ring-4 flex items-center gap-2',
-                                theme.buttonClass,
-                                theme.focusRingClass
-                            ]"
-                            >
+                            [ngClass]="[theme.buttonClass, theme.focusRingClass]"
+                            class="px-4 py-2.5 rounded-full text-white font-cute text-sm tracking-wide shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 flex items-center gap-2"
+                        >
                             <i class="fa-solid fa-forward" aria-hidden="true"></i>
                         </button>
                     </div>
+                </section>
 
-                    <!-- Work/Break Label -->
-                    <div [ngClass]="[theme.textClass, 'font-semibold text-lg tracking-wide']">
-                        {{ sessionType === 'work' ? 'Focus time! 💪' : 'Break time! ☕' }}
-                    </div>
-                    </div>
+                <!-- Petal divider -->
+                <div class="flex items-center gap-3 opacity-25" [ngClass]="theme.textClass" aria-hidden="true">
+                    <svg class="w-3 h-3" viewBox="0 0 12 12" fill="currentColor">
+                        <ellipse cx="6" cy="6" rx="3" ry="5" transform="rotate(-30 6 6)"/>
+                    </svg>
+                    <svg class="w-2 h-2" viewBox="0 0 12 12" fill="currentColor">
+                        <circle cx="6" cy="6" r="2"/>
+                    </svg>
+                    <svg class="w-3 h-3" viewBox="0 0 12 12" fill="currentColor">
+                        <ellipse cx="6" cy="6" rx="3" ry="5" transform="rotate(30 6 6)"/>
+                    </svg>
+                </div>
 
-                    <!-- Badges -->
-                    <div class="flex flex-col items-center gap-4 w-full md:w-[500px]">
-                    <div [ngClass]="[theme.textClass, 'text-lg font-cute font-bold tracking-wide']">
-                        {{ activeBadges.length }} {{ activeBadges.length === 1 ? 'Badge' : 'Badges' }} Earned
-                    </div>
-                    <div class="w-full">
-                        <app-badge-playground 
+                <!-- Garden (Badges) Card -->
+                <section class="w-full" aria-label="Badge collection">
+                    <div
+                        [ngClass]="theme.modalBackgroundClass"
+                        class="rounded-2xl p-5 shadow-sm border border-black/[0.04]"
+                    >
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 [ngClass]="theme.textClass" class="text-xs font-medium uppercase tracking-[0.15em] font-cute">
+                                Your Garden
+                            </h2>
+                            <span [ngClass]="theme.textClass" class="text-xs opacity-60">
+                                {{ activeBadges.length }} of 14 bloomed
+                            </span>
+                        </div>
+                        <app-badge-playground
                             [activeBadges]="activeBadges"
+                            [totalBadges]="14"
                             [textClass]="theme.textClass"
                             [modalBackgroundClass]="theme.modalBackgroundClass"
                             (restart)="restartBadges()"
                         ></app-badge-playground>
                     </div>
-                </div>
-            </div>
+                </section>
 
-            <!-- Timeline -->
-            <ng-container *ngIf="(startHour$ | async) as startHour">
-                <ng-container *ngIf="(endHour$ | async) as endHour">
-                    <div class="w-full max-w-5xl mt-12">
-                        <app-timeline
-                            [startHour]="startHour" 
-                            [endHour]="endHour"
-                            [textClass]="theme.textClass"
-                            [progressColorClass]="theme.progressFillClass"
-                            [backgroundClass]="theme.progressTrackClass"
-                            [modalBackgroundClass]="theme.modalBackgroundClass"
-                        ></app-timeline>
-                    </div>
+                <!-- Timeline Card -->
+                <ng-container *ngIf="(startHour$ | async) as startHour">
+                    <ng-container *ngIf="(endHour$ | async) as endHour">
+                        <section class="w-full" aria-label="Workday progress">
+                            <div
+                                [ngClass]="theme.modalBackgroundClass"
+                                class="rounded-2xl p-5 shadow-sm border border-black/[0.04]"
+                            >
+                                <h2 [ngClass]="theme.textClass" class="text-xs font-medium uppercase tracking-[0.15em] font-cute mb-4">
+                                    Your Day
+                                </h2>
+                                <app-timeline
+                                    [startHour]="startHour"
+                                    [endHour]="endHour"
+                                    [textClass]="theme.textClass"
+                                    [progressColorClass]="theme.progressFillClass"
+                                    [backgroundClass]="theme.progressTrackClass"
+                                    [modalBackgroundClass]="theme.modalBackgroundClass"
+                                ></app-timeline>
+                            </div>
+                        </section>
+                    </ng-container>
                 </ng-container>
-            </ng-container>
 
-            <!-- Settings Modal -->
+                <!-- Bottom spacer -->
+                <div class="h-8"></div>
+            </main>
+
+            <!-- Modals -->
             <ng-container *ngIf="showSettings$ | async">
                 <ng-container *ngIf="(startHour$ | async) as startHourForModal">
                     <ng-container *ngIf="(endHour$ | async) as endHourForModal">
