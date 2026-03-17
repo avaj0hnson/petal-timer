@@ -69,28 +69,28 @@ npm run serve:ssr:petal-timer
 
 ```text
 petal-timer/
-├── .github/workflows/         # CI pipeline (tests, coverage, lint)
-├── public/                    # Static assets (favicon, sounds, preview)
-│   └── sounds/                # Timer notification sounds
+├── .github/workflows/                  # CI pipeline (tests, coverage, lint)
+├── public/                             # Static assets (favicon, sounds, preview)
+│   └── sounds/                         # Timer notification sounds
 ├── src/
 │   ├── app/
 │   │   ├── pages/
-│   │   │   └── pomodoro/      # Main timer page
+│   │   │   └── pomodoro/               # Main timer page
 │   │   ├── components/
-│   │   │   ├── badge-playground/     # Badge garden display
-│   │   │   ├── info-modal/           # About & privacy modal
-│   │   │   ├── settings-modal/       # Timer settings modal
-│   │   │   ├── skip-confirm-modal/   # Skip confirmation dialog
-│   │   │   ├── task-list-modal/      # To-do list modal
-│   │   │   └── timeline/             # Workday progress bar
-│   │   ├── constants/         # Theme definitions
-│   │   ├── models/            # TypeScript interfaces
-│   │   └── services/          # Timer, theme, task, sound, badge logic
-│   └── styles.scss            # Global styles
-├── angular.json               # Angular CLI configuration
-├── tailwind.config.js         # Tailwind theme setup
-├── eslint.config.js           # ESLint configuration
-└── package.json               # Dependencies and scripts
+│   │   │   ├── badge-playground/       # Badge garden display
+│   │   │   ├── info-modal/             # About & privacy modal
+│   │   │   ├── settings-modal/         # Timer settings modal
+│   │   │   ├── skip-confirm-modal/     # Skip confirmation dialog
+│   │   │   ├── task-list-modal/        # To-do list modal
+│   │   │   └── timeline/              # Workday progress bar
+│   │   ├── constants/                  # Theme definitions
+│   │   ├── models/                     # TypeScript interfaces
+│   │   └── services/                   # Timer, theme, task, sound, badge logic
+│   └── styles.scss                     # Global styles
+├── angular.json                        # Angular CLI configuration
+├── tailwind.config.js                  # Tailwind theme setup
+├── eslint.config.js                    # ESLint configuration
+└── package.json                        # Dependencies and scripts
 ```
 
 ---
