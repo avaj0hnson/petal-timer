@@ -54,28 +54,28 @@ describe('SkipConfirmModalComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit cancel when Escape key is pressed', () => {
-    spyOn(component.cancel, 'emit');
+  it('should emit cancelSkip when Escape key is pressed', () => {
+    spyOn(component.cancelSkip, 'emit');
 
     const event = new KeyboardEvent('keydown', { key: 'Escape' });
     document.dispatchEvent(event);
 
-    expect(component.cancel.emit).toHaveBeenCalled();
+    expect(component.cancelSkip.emit).toHaveBeenCalled();
   });
 
   it('should bind theme input correctly', () => {
     expect(component.theme.name).toBe('Blush');
   });
 
-  it('should emit confirm when confirm is triggered manually', () => {
-    spyOn(component.confirm, 'emit');
-    component.confirm.emit();
-    expect(component.confirm.emit).toHaveBeenCalled();
+  it('should emit confirmSkip when confirmSkip is triggered manually', () => {
+    spyOn(component.confirmSkip, 'emit');
+    component.confirmSkip.emit();
+    expect(component.confirmSkip.emit).toHaveBeenCalled();
   });
 
-  it('should emit cancel when cancel is triggered manually', () => {
-    spyOn(component.cancel, 'emit');
-    component.cancel.emit();
-    expect(component.cancel.emit).toHaveBeenCalled();
+  it('should emit cancelSkip when cancelSkip is triggered manually', () => {
+    spyOn(component.cancelSkip, 'emit');
+    component.cancelSkip.emit();
+    expect(component.cancelSkip.emit).toHaveBeenCalled();
   });
 });
