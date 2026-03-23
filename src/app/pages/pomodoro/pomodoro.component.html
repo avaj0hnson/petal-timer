@@ -1,5 +1,5 @@
-<ng-container *ngIf="themeReady$ | async">
-    <ng-container *ngIf="theme$ | async as theme">
+@if (themeReady$ | async) {
+    @if (theme$ | async; as theme) {
         <div
             class="flex flex-col items-center min-h-screen w-full transition-colors duration-500 px-4 py-6 sm:px-6"
             [ngClass]="theme.backgroundClass"
@@ -53,17 +53,18 @@
                 <section class="flex flex-col items-center gap-5 pt-4">
                     <div class="relative w-[260px] h-[260px] flex items-center justify-center">
                         <!-- Glow -->
+                        @if (isRunning) {
                         <div
-                            *ngIf="isRunning"
                             class="timer-glow absolute inset-[-20px] rounded-full"
                             [style.background]="'radial-gradient(circle, ' + theme.ringColor + '22 0%, transparent 70%)'"
                         ></div>
+                        }
                         <!-- Timer circle -->
                         <div
                             [ngClass]="theme.modalBackgroundClass"
                             class="relative w-[240px] h-[240px] rounded-full shadow-lg flex items-center justify-center border border-black/[0.04]"
                         >
-                            <ng-container *ngIf="timeLeft$ | async as timeLeft">
+                            @if (timeLeft$ | async; as timeLeft) {
                                 <circle-progress
                                     [percent]="getProgressPercent(timeLeft)"
                                     [radius]="90"
@@ -90,7 +91,7 @@
                                 >
                                     {{ formatTime(timeLeft) }}
                                 </div>
-                            </ng-container>
+                            }
                         </div>
                     </div>
 
@@ -161,8 +162,8 @@
                 </section>
 
                 <!-- Timeline Card -->
-                <ng-container *ngIf="(startHour$ | async) as startHour">
-                    <ng-container *ngIf="(endHour$ | async) as endHour">
+                @if ((startHour$ | async); as startHour) {
+                    @if ((endHour$ | async); as endHour) {
                         <section class="w-full" aria-label="Workday progress">
                             <div
                                 [ngClass]="theme.modalBackgroundClass"
@@ -181,17 +182,17 @@
                                 ></app-timeline>
                             </div>
                         </section>
-                    </ng-container>
-                </ng-container>
+                    }
+                }
 
                 <!-- Bottom spacer -->
                 <div class="h-8"></div>
             </main>
 
             <!-- Modals -->
-            <ng-container *ngIf="showSettings$ | async">
-                <ng-container *ngIf="(startHour$ | async) as startHourForModal">
-                    <ng-container *ngIf="(endHour$ | async) as endHourForModal">
+            @if (showSettings$ | async) {
+                @if ((startHour$ | async); as startHourForModal) {
+                    @if ((endHour$ | async); as endHourForModal) {
                         <app-settings-modal
                             [startHour]="startHourForModal"
                             [endHour]="endHourForModal"
@@ -207,28 +208,31 @@
                             (mutedChange)="setMuted($event)"
                             (close)="closeSettings()"
                         ></app-settings-modal>
-                    </ng-container>
-                </ng-container>
-            </ng-container>
+                    }
+                }
+            }
 
+            @if (showInfoModal) {
             <app-info-modal
-                *ngIf="showInfoModal"
                 [theme]="theme"
                 (close)="showInfoModal = false"
             ></app-info-modal>
+            }
 
+            @if (showSkipConfirmModal) {
             <app-skip-confirm-modal
-                *ngIf="showSkipConfirmModal"
                 [theme]="theme"
-                (cancel)="showSkipConfirmModal = false"
-                (confirm)="confirmSkipSession()"
+                (cancelSkip)="showSkipConfirmModal = false"
+                (confirmSkip)="confirmSkipSession()"
             ></app-skip-confirm-modal>
+            }
 
+            @if (showTaskModal) {
             <app-task-list-modal
-                *ngIf="showTaskModal"
                 [theme]="theme"
                 (close)="showTaskModal = false"
             ></app-task-list-modal>
+            }
         </div>
-    </ng-container>
-</ng-container>
+    }
+}

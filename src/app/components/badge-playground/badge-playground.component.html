@@ -2,8 +2,8 @@
     <!-- Badge grid -->
     <div class="grid grid-cols-7 gap-3 justify-items-center">
         <!-- Earned badges -->
+        @for (badge of activeBadges; track badge.name) {
         <div
-            *ngFor="let badge of activeBadges"
             role="listitem"
             class="badge-earned text-3xl transition-transform duration-300 ease-out hover:scale-110 cursor-default"
             [ngClass]="textClass"
@@ -12,10 +12,11 @@
         >
             <span aria-hidden="true">{{ badge.emoji }}</span>
         </div>
+        }
 
         <!-- Locked placeholder petals -->
+        @for (slot of placeholderSlots; track $index) {
         <div
-            *ngFor="let slot of placeholderSlots"
             role="listitem"
             aria-label="Locked badge"
             class="flex items-center justify-center"
@@ -31,10 +32,12 @@
                 <path d="M12 13C12 13 9 15.5 9 18C9 20 10.3 22 12 22C13.7 22 15 20 15 18C15 15.5 12 13 12 13Z" opacity="0.7"/>
             </svg>
         </div>
+        }
     </div>
 
     <!-- Completion message -->
-    <div *ngIf="allBadgesUnlocked" class="flex items-center justify-center gap-2 mt-4">
+    @if (allBadgesUnlocked) {
+    <div class="flex items-center justify-center gap-2 mt-4">
         <span [ngClass]="textClass" class="text-sm font-cute font-medium">
             Garden complete!
         </span>
@@ -48,4 +51,5 @@
             <i class="fa-solid fa-rotate-right"></i>
         </button>
     </div>
+    }
 </div>

@@ -48,7 +48,8 @@
             </div>
 
             <!-- Task Progress or Prompt -->
-            <div *ngIf="tasks.length > 0; else noTasks">
+            @if (tasks.length > 0) {
+            <div>
                 <div class="w-full bg-black/[0.06] rounded-full h-2 overflow-hidden">
                     <div
                         class="h-full rounded-full transition-all duration-500"
@@ -58,16 +59,16 @@
                 </div>
                 <p class="text-xs font-medium mt-2 opacity-70">{{ taskCompletionLabel }}</p>
             </div>
-            <ng-template #noTasks>
-                <p class="text-sm text-center opacity-60 mt-2">
-                    Plant your first task
-                </p>
-            </ng-template>
+            } @else {
+            <p class="text-sm text-center opacity-60 mt-2">
+                Plant your first task
+            </p>
+            }
 
             <!-- Task List -->
             <div class="scroll-area text-left space-y-1.5 max-h-[250px] overflow-y-auto mt-2">
+                @for (task of tasks; track $index; let i = $index) {
                 <div
-                    *ngFor="let task of tasks; let i = index"
                     class="flex items-center justify-between gap-2 py-1.5 px-1"
                 >
                     <div class="flex items-center gap-2.5">
@@ -98,6 +99,7 @@
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
                 </div>
+                }
             </div>
         </div>
     </div>

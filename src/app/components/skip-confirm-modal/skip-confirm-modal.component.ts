@@ -11,11 +11,11 @@ import { CommonModule } from '@angular/common';
 })
 export class SkipConfirmModalComponent {
   @Input() theme!: Theme;
-  @Output() cancel = new EventEmitter<void>();
-  @Output() confirm = new EventEmitter<void>();
+  @Output() cancelSkip = new EventEmitter<void>();
+  @Output() confirmSkip = new EventEmitter<void>();
 
   @HostListener('document:keydown.escape')
   onEscapeKey(): void {
-    this.cancel.emit();
+    this.cancelSkip.emit();
   }
 }

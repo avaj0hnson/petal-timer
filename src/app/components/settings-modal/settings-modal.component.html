@@ -48,7 +48,9 @@
                         'border-black/10'
                     ]"
                 >
-                    <option *ngFor="let theme of themes" [value]="theme.name">{{ theme.name }}</option>
+                    @for (theme of themes; track theme.name) {
+                    <option [value]="theme.name">{{ theme.name }}</option>
+                    }
                 </select>
             </div>
 
@@ -128,7 +130,9 @@
                         'border-black/10'
                     ]"
                 >
-                    <option *ngFor="let hour of validStartHours" [value]="hour">{{ formatHour(hour) }}</option>
+                    @for (hour of validStartHours; track hour) {
+                    <option [value]="hour">{{ formatHour(hour) }}</option>
+                    }
                 </select>
             </div>
 
@@ -147,7 +151,9 @@
                         'border-black/10'
                     ]"
                 >
-                    <option *ngFor="let hour of validEndHours" [value]="hour">{{ formatHour(hour) }}</option>
+                    @for (hour of validEndHours; track hour) {
+                    <option [value]="hour">{{ formatHour(hour) }}</option>
+                    }
                 </select>
             </div>
         </div>
